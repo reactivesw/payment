@@ -14,6 +14,7 @@ import io.reactivesw.payment.application.model.mapper.CreditCardMapper;
 import io.reactivesw.payment.application.model.mapper.CustomerRequestMapper;
 import io.reactivesw.payment.application.model.mapper.PaymentMapper;
 import io.reactivesw.payment.application.model.mapper.TransactionRequestMapper;
+import io.reactivesw.payment.application.service.PaymentRestClient;
 import io.reactivesw.payment.domain.model.Payment;
 import io.reactivesw.payment.infrastructure.repository.PaymentRepository;
 import org.apache.commons.lang3.StringUtils;
