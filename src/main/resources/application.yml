@@ -6,7 +6,6 @@ logging:
     com.netflix.discovery: 'OFF'
     org.springframework.cloud: 'DEBUG'
 
-
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/reactivesw
@@ -20,3 +19,9 @@ spring:
       ddl-auto: update
   profiles:
     active: test
+
+braintree:
+  environment: "sanbox"
+  merchant-id: "zd4ykzzngrhgnbdv"
+  public-key: "j55k9vx4y7kp48yw"
+  private-key: "e993538bfa75c350dac4f3c95b377e26"

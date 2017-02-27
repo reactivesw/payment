@@ -22,9 +22,7 @@ public class PaymentRestClient {
   /**
    * rest template.
    */
-  @Autowired
-  @Qualifier("restTemplate")
-  private transient RestTemplate restTemplate;
+  private transient RestTemplate restTemplate = new RestTemplate();
 
   /**
    * get braintree customer id.
