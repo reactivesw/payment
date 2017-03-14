@@ -1,11 +1,14 @@
 package io.reactivesw.payment.application.controller;
 
+import static io.reactivesw.payment.infrastructure.Router.CUSTOMER_ID;
+import static io.reactivesw.payment.infrastructure.Router.PAYMENT_ROOT;
+import static io.reactivesw.payment.infrastructure.Router.PAYMENT_WITH_CUSTOMER_ID;
+
 import io.reactivesw.payment.application.model.CreditCardView;
 import io.reactivesw.payment.application.model.PaymentView;
 import io.reactivesw.payment.application.model.action.AddCreditCardAction;
 import io.reactivesw.payment.domain.service.PaymentService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import javax.validation.Valid;
-
-import static io.reactivesw.payment.infrastructure.Router.CUSTOMER_ID;
-import static io.reactivesw.payment.infrastructure.Router.PAYMENT_ROOT;
-import static io.reactivesw.payment.infrastructure.Router.PAYMENT_WITH_CUSTOMER_ID;
 
 /**
  * Created by Davis on 17/1/4.
@@ -47,11 +46,8 @@ public class PaymentController {
    * @param customerId customer id
    * @return list of credit cards
    */
-  @ApiOperation("get credit cards by customer id")
   @GetMapping(PAYMENT_WITH_CUSTOMER_ID)
-  public List<CreditCardView> getCreditCards(@PathVariable(CUSTOMER_ID)
-                                             @ApiParam(value = "subjectId", required = true)
-                                                 String customerId) {
+  public List<CreditCardView> getCreditCards(@PathVariable(CUSTOMER_ID) String customerId) {
     LOG.debug("enter getCreditCards, customer id is : {}", customerId);
 
     List<CreditCardView> result = paymentService.getCreditCards(customerId);
@@ -67,15 +63,10 @@ public class PaymentController {
    * @param addCreditCardAction the add credit card action
    * @return the list
    */
-  @ApiOperation("update customer credit card")
   @PutMapping(PAYMENT_WITH_CUSTOMER_ID)
-  public List<CreditCardView> addCreditCards(@PathVariable(CUSTOMER_ID)
-                                             @ApiParam(value = "subjectId", required = true)
-                                                 String customerId,
-                                             @RequestBody
-                                             @ApiParam(value = "CategoryEntity Update Fields",
-                                                 required = true)
-                                             @Valid AddCreditCardAction addCreditCardAction) {
+  public List<CreditCardView> addCreditCards(@PathVariable(CUSTOMER_ID) String customerId,
+                                             @RequestBody @Valid AddCreditCardAction
+                                                 addCreditCardAction) {
     LOG.debug("enter updateCreditCards, customer id is : {}", customerId);
 
     List<CreditCardView> result = paymentService.addCreditCard(customerId, addCreditCardAction);
@@ -92,7 +83,6 @@ public class PaymentController {
    * @param token  payment method token
    * @return Payment
    */
-  @ApiOperation("checkout")
   @PostMapping(PAYMENT_ROOT)
   public PaymentView checkout(@RequestParam String customerId,
                               @RequestParam String amount,
