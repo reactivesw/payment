@@ -1,4 +1,4 @@
-package io.reactivesw.payment.infrastructure.config;
+package io.reactivesw.payment.infrastructure.configuration;
 
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Environment;
