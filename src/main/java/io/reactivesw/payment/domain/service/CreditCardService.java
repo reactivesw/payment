@@ -152,6 +152,8 @@ public class CreditCardService {
   private com.braintreegateway.CreditCard createCustomerWithCreditCard(String customerId,
                                                                        CreditCardDraft
                                                                            creditCardDraft) {
+    LOG.debug("enter createCustomerWithCreditCard, customer is is : {}, credit card is : {}",
+        customerId, creditCardDraft);
     com.braintreegateway.CreditCard braintreeCard;
     CustomerRequest customerRequest = CustomerRequestMapper.of(creditCardDraft);
     Result<Customer> braintreeCustomer = gateway.customer().create(customerRequest);
