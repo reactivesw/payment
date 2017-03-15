@@ -135,6 +135,7 @@ public class CreditCardService {
    */
   private com.braintreegateway.CreditCard addCreditCard(CreditCardDraft creditCardDraft, String
       brainttreeId) {
+    // TODO: 17/3/15  validate card number is exist
     com.braintreegateway.CreditCard braintreeCard;
     CreditCardRequest request = CreditCardRequestMapper.of(brainttreeId, creditCardDraft);
     Result<com.braintreegateway.CreditCard> result = gateway.creditCard().create(request);

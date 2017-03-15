@@ -3,7 +3,6 @@ package io.reactivesw.payment.application.model.mapper;
 import com.braintreegateway.CustomerRequest;
 
 import io.reactivesw.payment.application.model.CreditCardDraft;
-import io.reactivesw.payment.application.model.CreditCardView;
 
 /**
  * Created by Davis on 17/2/3.

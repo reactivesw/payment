@@ -36,27 +36,27 @@ public class CreditCardController {
   private transient CreditCardService creditCardService;
 
   @GetMapping(value = CREDIT_CART_WITH_CUSTOMER_ID)
-  public List<CreditCardView> getAllCreditCarts(@PathVariable(name = CUSTOMER_ID) String
+  public List<CreditCardView> getAllCreditCards(@PathVariable(name = CUSTOMER_ID) String
                                                     customerId) {
 
-    LOG.debug("enter getAllCreditCarts, customer id is : {}", customerId);
+    LOG.debug("enter getAllCreditCards, customer id is : {}", customerId);
 
     List<CreditCardView> result = creditCardService.getCreditCards(customerId);
 
-    LOG.debug("end getAllCreditCarts, get credit card : {}", result.toString());
+    LOG.debug("end getAllCreditCards, get credit card : {}", result.toString());
 
     return result;
   }
 
   @PutMapping(value = CREDIT_CART_WITH_CUSTOMER_ID)
-  public CreditCardView addCreditCart(@PathVariable(name = CUSTOMER_ID) String customerId,
+  public CreditCardView addCreditCard(@PathVariable(name = CUSTOMER_ID) String customerId,
                                       @RequestBody CreditCardDraft creditCardDraft) {
-    LOG.debug("enter addCreditCart, customer id is : {}, credit card draft is : {}", customerId,
+    LOG.debug("enter addCreditCard, customer id is : {}, credit card draft is : {}", customerId,
         creditCardDraft);
 
     CreditCardView result = creditCardService.addCreditCard(customerId, creditCardDraft);
 
-    LOG.debug("end addCreditCart, credit card is : {}", result.toString());
+    LOG.debug("end addCreditCard, credit card is : {}", result.toString());
 
     return result;
   }

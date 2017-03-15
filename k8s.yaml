@@ -30,17 +30,17 @@ items:
               secretKeyRef:
                 name: reactivesw-secret
                 key: braintree.environment
-          - name: braintree_merchant-id
+          - name: braintree_merchantid
             valueFrom:
               secretKeyRef:
                 name: reactivesw-secret
                 key: braintree.merchantid
-          - name: braintree_private-key
+          - name: braintree_privatekey
             valueFrom:
               secretKeyRef:
                 name: reactivesw-secret
                 key: braintree.privatekey
-          - name: braintree_public-key
+          - name: braintree_publickey
             valueFrom:
               secretKeyRef:
                 name: reactivesw-secret

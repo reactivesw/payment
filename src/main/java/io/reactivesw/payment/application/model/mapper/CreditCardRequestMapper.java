@@ -8,9 +8,9 @@ import io.reactivesw.payment.application.model.CreditCardDraft;
  * Created by Davis on 17/3/15.
  */
 public class CreditCardRequestMapper {
-  public static CreditCardRequest of(String customerId, CreditCardDraft creditCart) {
+  public static CreditCardRequest of(String braintreeId, CreditCardDraft creditCart) {
     CreditCardRequest result = new CreditCardRequest()
-        .customerId(customerId)
+        .customerId(braintreeId)
         .number(creditCart.getNumber())
         .cardholderName(creditCart.getCardholderName())
         .cvv(creditCart.getCvv())
