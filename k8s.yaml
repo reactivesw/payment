@@ -34,17 +34,17 @@ items:
             valueFrom:
               secretKeyRef:
                 name: reactivesw-secret
-                key: braintree.merchant-id
+                key: braintree.merchantid
           - name: braintree_private-key
             valueFrom:
               secretKeyRef:
                 name: reactivesw-secret
-                key: braintree.private-key
+                key: braintree.privatekey
           - name: braintree_public-key
             valueFrom:
               secretKeyRef:
                 name: reactivesw-secret
-                key: braintree.public-key
+                key: braintree.publickey
           - name: jwt_secret
             valueFrom:
               secretKeyRef:
