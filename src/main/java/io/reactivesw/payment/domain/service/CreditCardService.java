@@ -157,6 +157,8 @@ public class CreditCardService {
         customerId, creditCardDraft);
     com.braintreegateway.CreditCard braintreeCard;
     CustomerRequest customerRequest = CustomerRequestMapper.of(creditCardDraft);
+    LOG.debug("gateway merchant path : {}",gateway.getConfiguration().getMerchantPath());
+    LOG.debug("gateway public key : {}", gateway.getConfiguration().getPublicKey());
     Result<Customer> braintreeCustomer = gateway.customer().create(customerRequest);
 
     String brainttreeId = braintreeCustomer.getTarget().getId();
