@@ -25,6 +25,26 @@ items:
             value: jdbc:postgresql://pg-data/payment
           - name: spring_cloud_config_uri
             value: http://reactivesw-config
+          - name: braintree_environment
+            valueFrom:
+              secretKeyRef:
+                name: reactivesw-secret
+                key: braintree.environment
+          - name: braintree_merchant-id
+            valueFrom:
+              secretKeyRef:
+                name: reactivesw-secret
+                key: braintree.merchant-id
+          - name: braintree_private-key
+            valueFrom:
+              secretKeyRef:
+                name: reactivesw-secret
+                key: braintree.private-key
+          - name: braintree_public-key
+            valueFrom:
+              secretKeyRef:
+                name: reactivesw-secret
+                key: braintree.public-key
           - name: jwt_secret
             valueFrom:
               secretKeyRef:
