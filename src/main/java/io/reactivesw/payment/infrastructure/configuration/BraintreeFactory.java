@@ -15,19 +15,19 @@ public class BraintreeFactory {
    * merchant id.
    */
   //  @Value("#{environment.BRAINTREE_MERCHANT_ID}")
-  @Value("${braintree.merchant-id}")
+  @Value("${braintree.merchantid}")
   public transient String merchantId;
 
   /**
    * public key.
    */
-  @Value("${braintree.public-key}")
+  @Value("${braintree.publickey}")
   public transient String publicKey;
 
   /**
    * private key.
    */
-  @Value("${braintree.private-key}")
+  @Value("${braintree.privatekey}")
   public transient String privateKey;
 
   /**
