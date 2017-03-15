@@ -7,23 +7,17 @@ import lombok.ToString;
 import java.util.Calendar;
 
 /**
- * Created by Davis on 17/2/3.
+ * Created by Davis on 17/3/15.
  */
 @Getter
 @Setter
 @ToString
-public class CreditCardView {
-  private String id;
-  private String bin;
+public class CreditCardDraft {
+  private String number;
   private String cardholderName;
   private String cardType;
-  private String customerId;
   private String expirationMonth;
   private String expirationYear;
-  private boolean expired;
-  private String last4;
   private String commercial;
-  private String token;
-  private Calendar updatedAt;
   private String cvv;
 }

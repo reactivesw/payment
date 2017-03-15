@@ -10,25 +10,9 @@ public final class Router {
   public static final String PAYMENT_ROOT = "/";
 
   /**
-   * The constant payment_client_token.
-   */
-  public static final String PAYMENT_CLIENT_TOKEN = PAYMENT_ROOT + "client-token";
-
-  /**
-   * The constant payment_transactionId.
-   */
-  public static final String PAYMENT_TRANSACTIONID = "transactionId";
-
-  /**
-   * The constant payment_with_transaction_id.
-   */
-  public static final String PAYMENT_WITH_TRANSACTION_ID = PAYMENT_ROOT + "{" +
-      PAYMENT_TRANSACTIONID + "}";
-
-  /**
    * customer id.
    */
-  public static final String CUSTOMER_ID = "subjectId";
+  public static final String CUSTOMER_ID = "customerId";
 
   /**
    * credit card.
@@ -38,13 +22,13 @@ public final class Router {
   /**
    * The constant PAYMENT_WITH_CREDIT_CARDS.
    */
-  public static final String PAYMENT_WITH_CREDIT_CARDS = PAYMENT_ROOT + CREDIT_CARDS;
+  public static final String CREDIT_CARDS_ROOT = PAYMENT_ROOT + CREDIT_CARDS;
 
   /**
    * payment with credit cards and customer id, /payments/credit-cards/{subjectId}.
    */
-  public static final String PAYMENT_WITH_CUSTOMER_ID = PAYMENT_WITH_CREDIT_CARDS +
-      "{" + CUSTOMER_ID + "}";
+  public static final String CREDIT_CART_WITH_CUSTOMER_ID = CREDIT_CARDS_ROOT +
+      "/{" + CUSTOMER_ID + "}";
 
   /**
    * The constant PAYMENT_HEALTH_CHECK.
