@@ -34,7 +34,6 @@ public class PaymentService {
   @Autowired
   private transient PaymentRepository paymentRepository;
 
-
   /**
    * Save payment payment.
    *
