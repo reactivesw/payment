@@ -25,7 +25,7 @@ import javax.persistence.Table;
 public class PaymentMethodInfoValue {
 
   /**
-   * Id
+   * Id.
    */
   @Id
   @GeneratedValue(generator = "uuid")

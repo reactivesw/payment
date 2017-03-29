@@ -2,8 +2,10 @@ package io.reactivesw.payment.domain.model.value;
 
 import io.reactivesw.payment.infrastructure.enums.TransactionState;
 import io.reactivesw.payment.infrastructure.enums.TransactionType;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.ZonedDateTime;
@@ -27,7 +29,7 @@ import javax.persistence.Table;
 public class TransactionValue {
 
   /**
-   * Id
+   * Id.
    */
   @Id
   @GeneratedValue(generator = "uuid")

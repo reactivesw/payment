@@ -6,9 +6,9 @@ checkstyle {
 //    checkstyleMain.exclude '**/util/**'
 }
 
-checkstyle{
+checkstyle {
     /*source = fileTree('src')*/
-    toolVersion='6.15'
+    toolVersion = '6.15'
 
     ignoreFailures = false
 

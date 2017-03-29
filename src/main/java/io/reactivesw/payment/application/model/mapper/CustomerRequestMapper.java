@@ -8,7 +8,19 @@ import io.reactivesw.payment.application.model.CreditCardDraft;
  * Created by Davis on 17/2/3.
  */
 public final class CustomerRequestMapper {
-  public static CustomerRequest of(CreditCardDraft creditCart) {
+  /**
+   * Instantiates a new Customer request mapper.
+   */
+  private CustomerRequestMapper() {
+  }
+
+  /**
+   * Build customer request.
+   *
+   * @param creditCart the credit cart
+   * @return the customer request
+   */
+  public static CustomerRequest build(CreditCardDraft creditCart) {
     CustomerRequest result = new CustomerRequest()
         .creditCard()
         .cardholderName(creditCart.getCardholderName())

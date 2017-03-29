@@ -27,6 +27,9 @@ import javax.persistence.Version;
 @Table(name = "credit_cart")
 @EntityListeners(AuditingEntityListener.class)
 public class CreditCard {
+  /**
+   * id.
+   */
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")

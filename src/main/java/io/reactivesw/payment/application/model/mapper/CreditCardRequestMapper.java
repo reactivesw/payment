@@ -7,8 +7,22 @@ import io.reactivesw.payment.application.model.CreditCardDraft;
 /**
  * Created by Davis on 17/3/15.
  */
-public class CreditCardRequestMapper {
-  public static CreditCardRequest of(String braintreeId, CreditCardDraft creditCart) {
+public final class CreditCardRequestMapper {
+
+  /**
+   * Instantiates a new Credit card request mapper.
+   */
+  private CreditCardRequestMapper() {
+  }
+
+  /**
+   * Build credit card request.
+   *
+   * @param braintreeId the braintree id
+   * @param creditCart  the credit cart
+   * @return the credit card request
+   */
+  public static CreditCardRequest build(String braintreeId, CreditCardDraft creditCart) {
     CreditCardRequest result = new CreditCardRequest()
         .customerId(braintreeId)
         .number(creditCart.getNumber())

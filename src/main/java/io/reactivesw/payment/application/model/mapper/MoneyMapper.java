@@ -6,9 +6,21 @@ import io.reactivesw.payment.domain.model.value.MoneyValue;
 /**
  * Created by umasuo on 16/12/8.
  */
-public class MoneyMapper {
+public final class MoneyMapper {
 
-  public static MoneyValue modelToEntity(Money model) {
+  /**
+   * Instantiates a new Money mapper.
+   */
+  private MoneyMapper() {
+  }
+
+  /**
+   * Model to entity money value.
+   *
+   * @param model the model
+   * @return the money value
+   */
+  public static MoneyValue toEntity(Money model) {
     MoneyValue entity = null;
     if (model != null) {
       entity = new MoneyValue();
@@ -18,7 +30,13 @@ public class MoneyMapper {
     return entity;
   }
 
-  public static Money entityToModel(MoneyValue entity) {
+  /**
+   * Entity to model money.
+   *
+   * @param entity the entity
+   * @return the money
+   */
+  public static Money toModel(MoneyValue entity) {
     Money model = null;
     if (entity != null) {
       model = new Money();

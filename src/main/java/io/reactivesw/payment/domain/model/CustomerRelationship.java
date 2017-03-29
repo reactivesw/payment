@@ -29,6 +29,9 @@ import javax.persistence.Version;
 @Table(name = "customer_relation_ship")
 @EntityListeners(AuditingEntityListener.class)
 public class CustomerRelationship {
+  /**
+   * id.
+   */
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -67,16 +70,19 @@ public class CustomerRelationship {
    */
   @Column(name = "external_id", nullable = false)
   private String externalId;
-
+  
   /**
-   * Instantiates a new Customer relationship.
+   * Build customer relationship.
    *
    * @param customerId the customer id
    * @param externalId the external id
+   * @return the customer relationship
    */
-  public CustomerRelationship(String customerId, String externalId) {
-    this.customerId = customerId;
-    this.externalId = externalId;
+  public static CustomerRelationship build(String customerId, String externalId) {
+    CustomerRelationship customerRelationship = new CustomerRelationship();
+    customerRelationship.setCustomerId(customerId);
+    customerRelationship.setExternalId(externalId);
+    return customerRelationship;
   }
 }
 

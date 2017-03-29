@@ -8,11 +8,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * and this action also extends other action configure in each service.
  * Created by umasuo on 16/11/21.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property =
-    "action")
-@JsonSubTypes( {
-//    @JsonSubTypes.Type(value = SetKey.class, name = "setKey"),
-})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "action")
+@JsonSubTypes( {})
 public interface UpdateAction {
+  /**
+   * get action name.
+   *
+   * @return String
+   */
   String getActionName();
 }
