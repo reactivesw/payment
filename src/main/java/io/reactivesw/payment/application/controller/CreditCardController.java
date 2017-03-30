@@ -35,6 +35,12 @@ public class CreditCardController {
   @Autowired
   private transient CreditCardService creditCardService;
 
+  /**
+   * Gets all credit cards.
+   *
+   * @param customerId the customer id
+   * @return the all credit cards
+   */
   @GetMapping(value = CREDIT_CART_WITH_CUSTOMER_ID)
   public List<CreditCardView> getAllCreditCards(@PathVariable(name = CUSTOMER_ID) String
                                                     customerId) {
@@ -48,6 +54,13 @@ public class CreditCardController {
     return result;
   }
 
+  /**
+   * Add credit card credit card view.
+   *
+   * @param customerId      the customer id
+   * @param creditCardDraft the credit card draft
+   * @return the credit card view
+   */
   @PutMapping(value = CREDIT_CART_WITH_CUSTOMER_ID)
   public CreditCardView addCreditCard(@PathVariable(name = CUSTOMER_ID) String customerId,
                                       @RequestBody CreditCardDraft creditCardDraft) {

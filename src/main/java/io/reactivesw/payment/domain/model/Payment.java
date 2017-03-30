@@ -37,7 +37,7 @@ import javax.persistence.Version;
 public class Payment {
 
   /**
-   * Id
+   * Id.
    */
   @Id
   @GeneratedValue(generator = "uuid")

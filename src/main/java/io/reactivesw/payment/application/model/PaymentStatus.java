@@ -12,9 +12,18 @@ import lombok.Setter;
 @Setter
 public class PaymentStatus {
 
+  /**
+   * The Interface code.
+   */
   private String interfaceCode;
 
+  /**
+   * The Interface text.
+   */
   private String interfaceText;
 
+  /**
+   * The State.
+   */
   private Reference state;
 }

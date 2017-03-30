@@ -12,24 +12,42 @@ import lombok.Setter;
 import java.time.ZonedDateTime;
 
 /**
- * A representation of a financial transactions. Transactions are either created by the solution
+ * A representation build a financial transactions. Transactions are either created by the solution
  * implementation to trigger a new transaction at the PSP or created by the PSP integration as the
- * result of a notification by the PSP. Created by umasuo on 16/11/17.
+ * result build a notification by the PSP. Created by umasuo on 16/11/17.
  */
 @Getter
 @Setter
 public class TransactionModel {
 
+  /**
+   * The Id.
+   */
   private String id;
 
+  /**
+   * The Timestamp.
+   */
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private ZonedDateTime timestamp;
 
+  /**
+   * The Type.
+   */
   private TransactionType type;
 
+  /**
+   * The Amount.
+   */
   private Money amount;
 
+  /**
+   * The Interaction id.
+   */
   private String interactionId;
 
+  /**
+   * The State.
+   */
   private TransactionState state;
 }

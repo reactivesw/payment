@@ -1,6 +1,7 @@
 package io.reactivesw.payment.application.model.mapper;
 
 import com.braintreegateway.Transaction;
+
 import io.reactivesw.model.Reference;
 import io.reactivesw.payment.application.model.PaymentStatus;
 import io.reactivesw.payment.domain.model.value.PaymentStatusValue;
@@ -22,7 +23,7 @@ public final class PaymentStatusMapper {
    * @param transaction the transaction
    * @return the payment status value
    */
-  public static PaymentStatusValue of(Transaction transaction) {
+  public static PaymentStatusValue build(Transaction transaction) {
 
     PaymentStatusValue result = new PaymentStatusValue();
 

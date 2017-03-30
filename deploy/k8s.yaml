@@ -22,7 +22,7 @@ items:
           - name: server_port
             value: "80"
           - name: spring_datasource_url
-            value: jdbc:postgresql://pg-data/payment
+            value: jdbc:postgresql://reactivesw-data/payment
           - name: spring_cloud_config_uri
             value: http://reactivesw-config
           - name: braintree_environment

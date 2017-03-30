@@ -1,8 +1,9 @@
 package io.reactivesw.payment.domain.model.value;
 
-import org.hibernate.annotations.GenericGenerator;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import java.util.Objects;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,10 +16,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "common_money")
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"currencyCode", "centAmount"})
 public class MoneyValue {
 
   /**
-   * Id
+   * Id.
    */
   @Id
   @GeneratedValue(generator = "uuid")
@@ -35,13 +38,6 @@ public class MoneyValue {
    * The Cent amount.
    */
   private Integer centAmount;
-
-  /**
-   * default constructor.
-   */
-  public MoneyValue() {
-
-  }
 
   /**
    * constructor.
@@ -88,41 +84,5 @@ public class MoneyValue {
    */
   public void setCentAmount(Integer centAmount) {
     this.centAmount = centAmount;
-  }
-
-  /**
-   * equals method.
-   * if the currency and the currency code is the same, so the two object is equals.
-   *
-   * @param obj
-   * @return
-   */
-  @Override
-  public boolean equals(Object obj) {
-    boolean result = false;
-
-    if (this == obj) {
-      result = true;
-    }
-
-    if (this != obj && obj instanceof MoneyValue) {
-      MoneyValue that = (MoneyValue) obj;
-      result = Objects.equals(this.getCentAmount(), that.getCentAmount())
-          && Objects.equals(this.getCurrencyCode(), that.getCurrencyCode());
-    }
-
-    return result;
-  }
-
-  /**
-   * hash code.
-   *
-   * @return
-   */
-  @Override
-  public int hashCode() {
-    int result = getCurrencyCode() == null ? 0 : getCurrencyCode().hashCode();
-    result = 31 * result + (getCentAmount() == null ? 0 : getCentAmount().hashCode());
-    return result;
   }
 }

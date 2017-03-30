@@ -8,7 +8,20 @@ import java.math.BigDecimal;
  * Created by Davis on 17/2/3.
  */
 public final class TransactionRequestMapper {
-  public static TransactionRequest of(BigDecimal decimalAmount, String token) {
+  /**
+   * Instantiates a new Transaction request mapper.
+   */
+  private TransactionRequestMapper() {
+  }
+  
+  /**
+   * Build transaction request.
+   *
+   * @param decimalAmount the decimal amount
+   * @param token         the token
+   * @return the transaction request
+   */
+  public static TransactionRequest build(BigDecimal decimalAmount, String token) {
     return new TransactionRequest()
         .amount(decimalAmount)
         .paymentMethodToken(token)

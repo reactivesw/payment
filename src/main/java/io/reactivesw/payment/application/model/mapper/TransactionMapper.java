@@ -1,7 +1,9 @@
 package io.reactivesw.payment.application.model.mapper;
 
+import com.google.common.collect.Lists;
+
 import com.braintreegateway.Transaction;
-import com.google.api.client.util.Lists;
+
 import io.reactivesw.model.Money;
 import io.reactivesw.payment.application.model.TransactionModel;
 import io.reactivesw.payment.domain.model.value.MoneyValue;
@@ -22,15 +24,16 @@ import java.util.stream.Collectors;
  */
 public final class TransactionMapper {
   /**
+   * conversion factor.
+   */
+  private static BigDecimal conversionFactor = new BigDecimal("100");
+
+  /**
    * Instantiates a new TransactionModel mapper.
    */
   private TransactionMapper() {
   }
 
-  /**
-   * conversion factor.
-   */
-  private static BigDecimal conversionFactor = new BigDecimal("100");
 
   /**
    * Entity to model list.
@@ -38,13 +41,13 @@ public final class TransactionMapper {
    * @param entities the entities
    * @return the list
    */
-  public static List<TransactionModel> entityToModel(List<TransactionValue> entities) {
+  public static List<TransactionModel> toModel(List<TransactionValue> entities) {
     List<TransactionModel> models = Lists.newArrayList();
 
     if (entities != null) {
       models = entities.parallelStream().map(
           entity -> {
-            return entityToModel(entity);
+            return toModel(entity);
           }
       ).collect(Collectors.toList());
     }
@@ -58,27 +61,47 @@ public final class TransactionMapper {
    * @param entity the entity
    * @return the transaction model
    */
-  public static TransactionModel entityToModel(TransactionValue entity) {
+  public static TransactionModel toModel(TransactionValue entity) {
     TransactionModel model = new TransactionModel();
 
     model.setId(entity.getId());
     model.setTimestamp(entity.getTimestamp());
     model.setType(entity.getType());
-    model.setAmount(MoneyMapper.entityToModel(entity.getAmount()));
+    model.setAmount(MoneyMapper.toModel(entity.getAmount()));
     model.setInteractionId(entity.getInteractionId());
     model.setState(entity.getState());
 
     return model;
   }
 
+  /**
+   * Entity to model transaction.
+   *
+   * @param entity the entity
+   * @return the transaction
+   */
+  public static TransactionModel toModel(Transaction entity) {
+    TransactionModel model = new TransactionModel();
+
+    model.setId(entity.getId());
+    model.setTimestamp(ZonedDateTime.ofInstant(entity.getCreatedAt().toInstant(),
+        ZoneId.systemDefault()));
+
+    model.setState(getTransactionState(entity));
+    model.setAmount(getAmount(entity));
+    model.setType(getTransactionType(entity));
+    model.setInteractionId(null);
+
+    return model;
+  }
 
   /**
-   * Of transaction value.
+   * Build transaction value.
    *
    * @param transaction the transaction
    * @return the transaction value
    */
-  public static TransactionValue of(Transaction transaction) {
+  public static TransactionValue build(Transaction transaction) {
     // TODO: 17/2/6
     TransactionValue result = new TransactionValue();
 
@@ -94,35 +117,19 @@ public final class TransactionMapper {
 
     result.setAmount(new MoneyValue(transaction.getCurrencyIsoCode(), centAmount));
     result.setInteractionId(transaction.getId());
-    
+
     result.setType(TransactionType.Charge);
     result.setState(TransactionState.Success);
 
     return result;
   }
 
-
   /**
-   * Entity to model transaction.
+   * get transaction state from Transaction.
    *
-   * @param entity the entity
-   * @return the transaction
+   * @param entity the Transaction
+   * @return TransactionState
    */
-  public static TransactionModel entityToModel(Transaction entity) {
-    TransactionModel model = new TransactionModel();
-
-    model.setId(entity.getId());
-    model.setTimestamp(ZonedDateTime.ofInstant(entity.getCreatedAt().toInstant(),
-        ZoneId.systemDefault()));
-
-    model.setState(getTransactionState(entity));
-    model.setAmount(getAmount(entity));
-    model.setType(getTransactionType(entity));
-    model.setInteractionId(null);
-
-    return model;
-  }
-
   private static TransactionState getTransactionState(Transaction entity) {
     TransactionState transactionState = TransactionState.Pending;
     if (entity.getStatus().equals(Transaction.Status
@@ -134,6 +141,12 @@ public final class TransactionMapper {
     return transactionState;
   }
 
+  /**
+   * get amount from Transaction.
+   *
+   * @param entity the Transaction
+   * @return Money
+   */
   private static Money getAmount(Transaction entity) {
     Money amount = new Money();
 
@@ -143,10 +156,26 @@ public final class TransactionMapper {
     return amount;
   }
 
+  /**
+   * get TransactionType from Transaction.
+   *
+   * @param entity the Transaction
+   * @return TransactionType
+   */
   private static TransactionType getTransactionType(Transaction entity) {
     TransactionType transactionType = null;
 
-    // TODO: 17/1/5
+    // TODO: 17/1/5 set transaction type.
+    switch (entity.getStatus()) {
+      case AUTHORIZED:
+        transactionType = TransactionType.Authorization;
+        break;
+      case SUBMITTED_FOR_SETTLEMENT:
+        transactionType = TransactionType.Charge;
+        break;
+      default:
+        break;
+    }
 
     return transactionType;
   }

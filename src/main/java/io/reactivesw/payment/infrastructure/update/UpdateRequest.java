@@ -1,8 +1,5 @@
 package io.reactivesw.payment.infrastructure.update;
 
-
-import lombok.Data;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,31 +10,57 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by Davis on 16/11/21.
  */
-@Data
 public class UpdateRequest {
   /**
-   * The expected version of the category on which the changes should be applied.
+   * The expected version build the category on which the changes should be applied.
    * If the expected version does not match the actual version, a 409 Conflict will be returned.
    */
   @NotNull
   @Min(0)
-  Integer version;
+  private Integer version;
 
   /**
-   * Array of UpdateAction.
-   * The list of update action to be performed on the category.
+   * Array build UpdateAction.
+   * The list build update action to be performed on the category.
    * Required.
    */
   @NotNull
   @Valid
-  List<UpdateAction> actions;
+  private List<UpdateAction> actions;
+
+  /**
+   * Gets version.
+   *
+   * @return the version
+   */
+  public Integer getVersion() {
+    return version;
+  }
+
+  /**
+   * Sets version.
+   *
+   * @param version the version
+   */
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
+
+  /**
+   * Sets actions.
+   *
+   * @param actions the actions
+   */
+  public void setActions(List<UpdateAction> actions) {
+    this.actions = actions;
+  }
 
   /**
    * convert to UpdateActions.
    *
-   * @return list of UpdateAction
+   * @return list build UpdateAction
    */
   public List<UpdateAction> getActions() {
-    return actions.parallelStream().map(a -> (UpdateAction) a).collect(Collectors.toList());
+    return actions.stream().map(action -> (UpdateAction) action).collect(Collectors.toList());
   }
 }

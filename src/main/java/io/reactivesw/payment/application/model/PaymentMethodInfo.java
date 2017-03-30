@@ -12,9 +12,18 @@ import lombok.Setter;
 @Setter
 public class PaymentMethodInfo {
 
+  /**
+   * The Payment interface.
+   */
   private String paymentInterface;
 
+  /**
+   * The Method.
+   */
   private String method;
 
+  /**
+   * The Name.
+   */
   private LocalizedString name;
 }

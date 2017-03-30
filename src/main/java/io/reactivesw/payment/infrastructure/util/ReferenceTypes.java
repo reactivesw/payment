@@ -31,8 +31,15 @@ public enum ReferenceTypes {
 
   TAXCATEGORY("tax-category");
 
+  /**
+   * enum value.
+   */
   private String value;
 
+  /**
+   * private constructor.
+   * @param value enum value
+   */
   private ReferenceTypes(String value) {
     this.value = value;
   }

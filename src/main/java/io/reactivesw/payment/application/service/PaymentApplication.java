@@ -5,6 +5,7 @@ import com.braintreegateway.Result;
 import com.braintreegateway.Transaction;
 import com.braintreegateway.TransactionRequest;
 
+import io.reactivesw.exception.ParametersException;
 import io.reactivesw.payment.application.model.PaymentView;
 import io.reactivesw.payment.application.model.mapper.PaymentMapper;
 import io.reactivesw.payment.application.model.mapper.TransactionRequestMapper;
@@ -33,20 +34,32 @@ public class PaymentApplication {
   /**
    * credit card service.
    */
-  @Autowired
   private transient CreditCardService creditCardService;
 
   /**
    * braintree gateway.
    */
-  @Autowired
   private transient BraintreeGateway gateway;
 
   /**
    * payment service.
    */
-  @Autowired
   private transient PaymentService paymentService;
+
+  /**
+   * Instantiates a new Payment application.
+   *
+   * @param creditCardService the credit card service
+   * @param gateway           the gateway
+   * @param paymentService    the payment service
+   */
+  @Autowired
+  public PaymentApplication(CreditCardService creditCardService, BraintreeGateway gateway,
+                            PaymentService paymentService) {
+    this.creditCardService = creditCardService;
+    this.gateway = gateway;
+    this.paymentService = paymentService;
+  }
 
   /**
    * Checkout payment view.
@@ -65,14 +78,14 @@ public class PaymentApplication {
 
     String token = getPaymentToken(creditCardId);
 
-    TransactionRequest request = TransactionRequestMapper.of(decimalAmount, token);
+    TransactionRequest request = TransactionRequestMapper.build(decimalAmount, token);
     Result<Transaction> result = gateway.transaction().sale(request);
 
     // TODO: 17/2/4 处理不同的结果
 
     Payment savedEntity = paymentService.savePayment(customerId, amount, result);
 
-    return PaymentMapper.entityToModel(savedEntity);
+    return PaymentMapper.toModel(savedEntity);
   }
 
   /**
@@ -98,8 +111,9 @@ public class PaymentApplication {
     try {
       decimalAmount = new BigDecimal(amount);
       decimalAmount = decimalAmount.divide(new BigDecimal("100"));
-    } catch (NumberFormatException e) {
-      LOG.debug("can not parse amount : {} to BigDecimal", amount);
+    } catch (NumberFormatException ex) {
+      LOG.debug("can not parse amount : {} to BigDecimal", amount, ex);
+      throw new ParametersException("Can Not Parse Amount to BigDecimal");
     }
     return decimalAmount;
   }

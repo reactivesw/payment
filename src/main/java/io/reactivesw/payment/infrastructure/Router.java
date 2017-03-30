@@ -27,8 +27,8 @@ public final class Router {
   /**
    * payment with credit cards and customer id, /payments/credit-cards/{subjectId}.
    */
-  public static final String CREDIT_CART_WITH_CUSTOMER_ID = CREDIT_CARDS_ROOT +
-      "/{" + CUSTOMER_ID + "}";
+  public static final String CREDIT_CART_WITH_CUSTOMER_ID =
+      CREDIT_CARDS_ROOT + "/{" + CUSTOMER_ID + "}";
 
   /**
    * The constant PAYMENT_HEALTH_CHECK.

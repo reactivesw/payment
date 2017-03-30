@@ -1,7 +1,8 @@
 package io.reactivesw.payment.domain.model.value;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -15,47 +16,44 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "common_localized_String")
-@Data
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
 public class LocalizedStringValue {
 
   /**
-   * Id
+   * Id.
    */
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
   @Column(name = "id")
-  protected String id;
+  private String id;
 
   /**
    * language.
    */
   @Column
-  protected String language;
+  private String language;
 
   /**
    * text value.
    */
   @Column(columnDefinition = "text")
-  protected String text;
+  private String text;
 
   /**
-   * Instantiates a new Localized string entity.
-   */
-  public LocalizedStringValue() {
-    super();
-  }
-
-  /**
-   * Instantiates a new Localized string entity.
+   * Build localized string value.
    *
    * @param language the language
    * @param text     the text
+   * @return the localized string value
    */
-  public LocalizedStringValue(String language, String text) {
-    this.language = language;
-    this.text = text;
-  }
+  public static LocalizedStringValue build(String language, String text) {
+    LocalizedStringValue value = new LocalizedStringValue();
 
+    value.setLanguage(language);
+    value.setText(text);
+
+    return value;
+  }
 }
