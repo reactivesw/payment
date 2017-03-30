@@ -1,28 +1,19 @@
 package io.reactivesw.payment.domain.service
 
-import com.braintreegateway.BraintreeGateway
-import com.braintreegateway.CreditCardGateway
-import com.braintreegateway.Customer
-import com.braintreegateway.CustomerGateway
-import com.braintreegateway.Result
 import com.google.common.collect.Lists
 import io.reactivesw.exception.NotExistException
 import io.reactivesw.payment.application.model.CreditCardDraft
 import io.reactivesw.payment.domain.model.CreditCard
-import io.reactivesw.payment.domain.model.CustomerRelationship
 import io.reactivesw.payment.infrastructure.repository.CreditCardRepository
-import io.reactivesw.payment.infrastructure.repository.CustomerRelationshipRepository
 import spock.lang.Specification
 
 /**
  * Created by Davis on 17/3/30.
  */
 class CreditCardServiceTest extends Specification {
-    BraintreeGateway gateway = Mock()
     CreditCardRepository creditCardRepository = Mock()
-    CustomerRelationshipRepository customerRelationshipRepository = Mock()
 
-    CreditCardService service = new CreditCardService(gateway, creditCardRepository, customerRelationshipRepository)
+    CreditCardService service = new CreditCardService(creditCardRepository)
 
     def customerId = "customer-111"
     def creditCard = new CreditCard()
@@ -105,60 +96,4 @@ class CreditCardServiceTest extends Specification {
         then:
         thrown(NotExistException)
     }
-
-    def "Test 3.1: add credit card"() {
-        given:
-        com.braintreegateway.CreditCard braintreeCard = Mock()
-        braintreeCard.getLast4() >> last4
-        braintreeCard.getBin() >> bin
-        braintreeCard.getCommercial() >> com.braintreegateway.CreditCard.Commercial.YES
-        braintreeCard.getToken() >> paymentToken
-
-        Customer customer = Mock()
-        customer.getId() >> braintreeCustomerId
-        customer.getCreditCards() >> Lists.newArrayList(braintreeCard)
-        Result<Customer> braintreeCustomer = new Result()
-        braintreeCustomer.target = customer
-
-        CustomerGateway customerGateway = Mock()
-        gateway.customer() >> customerGateway
-        customerGateway.create(_) >> braintreeCustomer
-
-        creditCardRepository.save(_) >> creditCard
-
-        when:
-        def result = service.addCreditCard(customerId, creditCardDraft)
-
-        then:
-        result != null
-    }
-
-    def "Test 3.2: add credit card first time"() {
-        given:
-        com.braintreegateway.CreditCard btCreditCard = Mock()
-        btCreditCard.getBin() >> bin
-        btCreditCard.getLast4() >> last4
-        btCreditCard.getToken() >> paymentToken
-        btCreditCard.getCommercial() >> com.braintreegateway.CreditCard.Commercial.YES
-        btCreditCard.getCreatedAt() >> Calendar.getInstance()
-
-        Result<com.braintreegateway.CreditCard> braintreeCreditCard = new Result()
-        braintreeCreditCard.target = btCreditCard
-
-        CreditCardGateway creditCardGateway = Mock()
-        gateway.creditCard() >> creditCardGateway
-        creditCardGateway.create(_) >> braintreeCreditCard
-
-        customerRelationshipRepository.findByCustomerId(_) >> new CustomerRelationship(externalId: braintreeCustomerId)
-        customerRelationshipRepository.save(_) >> null
-
-        creditCardRepository.save(_) >> creditCard
-
-        when:
-        def result = service.addCreditCard(customerId, creditCardDraft)
-
-        then:
-        result != null
-    }
-
 }

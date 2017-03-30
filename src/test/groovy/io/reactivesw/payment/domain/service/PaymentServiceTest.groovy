@@ -2,6 +2,7 @@ package io.reactivesw.payment.domain.service
 
 import com.braintreegateway.Result
 import com.braintreegateway.Transaction
+import io.reactivesw.model.Money
 import io.reactivesw.payment.domain.model.Payment
 import io.reactivesw.payment.infrastructure.repository.PaymentRepository
 import spock.lang.Specification
@@ -25,7 +26,7 @@ class PaymentServiceTest extends Specification {
 
     def "Test 1: save payment"() {
         given:
-        def amount = "10000"
+        def amount = new Money(currencyCode: "USD", centAmount: 12300)
         Result<Transaction> transactionResult = new Result<>()
         Transaction transaction = Mock()
         transactionResult.target = transaction
