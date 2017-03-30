@@ -96,8 +96,16 @@ public class CreditCardService {
   public String getPaymentToken(String creditCardId) {
     LOG.debug("enter getPaymentToken, credit card id is : {}", creditCardId);
     CreditCard creditCard = creditCardRepository.findOne(creditCardId);
+
+    if (creditCard == null) {
+      LOG.debug("can not find credit card by id: {}", creditCardId);
+      throw new NotExistException("Credit Card Not Found");
+    }
+
     String result = creditCard.getToken();
+
     LOG.debug("end getPaymentToken, token is : {}", result);
+
     return result;
   }
 

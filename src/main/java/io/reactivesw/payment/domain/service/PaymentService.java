@@ -25,8 +25,17 @@ public class PaymentService {
   /**
    * payment repository.
    */
-  @Autowired
   private transient PaymentRepository paymentRepository;
+  
+  /**
+   * Instantiates a new Payment service.
+   *
+   * @param paymentRepository the payment repository
+   */
+  @Autowired
+  public PaymentService(PaymentRepository paymentRepository) {
+    this.paymentRepository = paymentRepository;
+  }
 
   /**
    * Save payment payment.

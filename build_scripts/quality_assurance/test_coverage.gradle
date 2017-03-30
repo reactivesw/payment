@@ -11,8 +11,11 @@ dependencies {
     //spock core
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
 
-    // for mock non-interface
-    testCompile('cglib:cglib-nodep:3.2.5')
+    // For mock non-interface
+    testCompile('cglib:cglib-nodep:3.2.4')
+
+    // For spring boot test
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 jacocoCoverage { // Enforce minimum code coverage of 80% for every Java file.

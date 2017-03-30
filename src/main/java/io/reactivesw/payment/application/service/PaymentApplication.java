@@ -5,6 +5,7 @@ import com.braintreegateway.Result;
 import com.braintreegateway.Transaction;
 import com.braintreegateway.TransactionRequest;
 
+import io.reactivesw.exception.ParametersException;
 import io.reactivesw.payment.application.model.PaymentView;
 import io.reactivesw.payment.application.model.mapper.PaymentMapper;
 import io.reactivesw.payment.application.model.mapper.TransactionRequestMapper;
@@ -112,6 +113,7 @@ public class PaymentApplication {
       decimalAmount = decimalAmount.divide(new BigDecimal("100"));
     } catch (NumberFormatException ex) {
       LOG.debug("can not parse amount : {} to BigDecimal", amount, ex);
+      throw new ParametersException("Can Not Parse Amount to BigDecimal");
     }
     return decimalAmount;
   }
