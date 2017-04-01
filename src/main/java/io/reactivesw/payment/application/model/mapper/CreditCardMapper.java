@@ -41,13 +41,10 @@ public final class CreditCardMapper {
     model.setBin(entity.getBin());
     model.setCardholderName(entity.getCardholderName());
     model.setCardType(entity.getCardType());
-    model.setCommercial(entity.getCommercial().toString());
     model.setCustomerId(entity.getCustomerId());
-    model.setExpirationMonth(entity.getExpirationMonth());
-    model.setExpirationYear(entity.getExpirationYear());
     model.setExpired(entity.isExpired());
-    model.setToken(entity.getToken());
     model.setLast4(entity.getLast4());
+    model.setSelected(entity.getSelected());
     return model;
   }
 

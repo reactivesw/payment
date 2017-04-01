@@ -3,6 +3,7 @@ package io.reactivesw.payment.domain.service
 import com.google.common.collect.Lists
 import io.reactivesw.exception.NotExistException
 import io.reactivesw.payment.application.model.CreditCardDraft
+import io.reactivesw.payment.application.model.DefaultCardRequest
 import io.reactivesw.payment.domain.model.CreditCard
 import io.reactivesw.payment.infrastructure.repository.CreditCardRepository
 import spock.lang.Specification
@@ -20,15 +21,14 @@ class CreditCardServiceTest extends Specification {
     def creditCardId = "credit-card-111"
     def paymentToken = "payment-token-111"
     def commercial = "commercial-111"
-    def braintreeCustomerId = "braintree-customer-111"
     def last4 = "1111"
     def bin = "411111"
+    def requestCreditCardId = "credit-card-222"
 
     def creditCardDraft = new CreditCardDraft()
 
     def setup() {
         creditCardDraft.cardholderName = "cardholder-name-111"
-        creditCardDraft.commercial = commercial
         creditCardDraft.cvv = "123"
         creditCardDraft.expirationMonth = "09"
         creditCardDraft.expirationYear = "2019"
@@ -39,6 +39,7 @@ class CreditCardServiceTest extends Specification {
         creditCard.commercial = commercial
         creditCard.id = creditCardId
         creditCard.token = paymentToken
+        creditCard.selected = true
     }
 
     def "Test 1.1: get credit cards by customer id"() {
@@ -95,5 +96,20 @@ class CreditCardServiceTest extends Specification {
 
         then:
         thrown(NotExistException)
+    }
+
+    def "Test 3.1: set default credit card"() {
+        given:
+        def requestCreditCard = creditCard
+        requestCreditCard.id = requestCreditCardId
+        requestCreditCard.selected = false
+        creditCardRepository.getCreditCardsByCustomerId(_) >> Lists.newArrayList(creditCard, requestCreditCard)
+        DefaultCardRequest request = new DefaultCardRequest(customerId: customerId, creditCardId: requestCreditCardId)
+
+        when:
+        def result = service.setDefaultCreditCard(request)
+
+        then:
+        result != null
     }
 }

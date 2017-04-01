@@ -2,14 +2,17 @@ package io.reactivesw.payment.domain.service;
 
 import io.reactivesw.exception.NotExistException;
 import io.reactivesw.payment.application.model.CreditCardView;
+import io.reactivesw.payment.application.model.DefaultCardRequest;
 import io.reactivesw.payment.application.model.mapper.CreditCardMapper;
 import io.reactivesw.payment.domain.model.CreditCard;
 import io.reactivesw.payment.infrastructure.repository.CreditCardRepository;
+import io.reactivesw.payment.infrastructure.util.CreditCardUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -64,12 +67,7 @@ public class CreditCardService {
   public List<CreditCardView> getCreditCards(String customerId) {
     LOG.debug("enter getCreditCards, customer id is : {}", customerId);
 
-    List<CreditCard> creditCards = creditCardRepository.getCreditCardsByCustomerId(customerId);
-
-    if (creditCards == null || creditCards.isEmpty()) {
-      LOG.debug("can not find any credit card by customerId : {}", customerId);
-      throw new NotExistException("Credit Cards Not Exist");
-    }
+    List<CreditCard> creditCards = getCreditCardByCustomerId(customerId);
 
     List<CreditCardView> result = CreditCardMapper.toModel(creditCards);
 
@@ -97,5 +95,74 @@ public class CreditCardService {
     LOG.debug("end getPaymentToken, token is : {}", result);
 
     return result;
+  }
+
+  /**
+   * Sets default card.
+   *
+   * @param request the request
+   * @return the default card
+   */
+  @Transactional
+  public List<CreditCardView> setDefaultCreditCard(DefaultCardRequest request) {
+    LOG.debug("enter. request is: {}.", request);
+
+    List<CreditCard> creditCards = getCreditCardByCustomerId(request.getCustomerId());
+
+    CreditCard defaultCreditCard = CreditCardUtils.getDefaultCreditCard(creditCards);
+    clearDefaultCreditCard(defaultCreditCard);
+
+    CreditCard requestCreditCard = CreditCardUtils.getCreditCardById(creditCards, request
+        .getCreditCardId());
+    setDefaultCreditCardEntity(request.getCreditCardId(), requestCreditCard);
+
+    List<CreditCardView> result = CreditCardMapper.toModel(getCreditCardByCustomerId(request
+        .getCustomerId()));
+
+    LOG.info("exit.");
+
+    return result;
+  }
+
+  /**
+   * set default credit card to database.
+   *
+   * @param creditCardId      the credit card id
+   * @param requestCreditCard the CreditCard
+   */
+  private void setDefaultCreditCardEntity(String creditCardId, CreditCard requestCreditCard) {
+    if (requestCreditCard == null) {
+      LOG.debug("can not find credit card by id: {}.", creditCardId);
+      throw new NotExistException("Credit Card Not Exist");
+    }
+    requestCreditCard.setSelected(true);
+    creditCardRepository.save(requestCreditCard);
+  }
+
+  /**
+   * clear default setting.
+   *
+   * @param defaultCreditCard CreditCard
+   */
+  private void clearDefaultCreditCard(CreditCard defaultCreditCard) {
+    if (defaultCreditCard != null) {
+      defaultCreditCard.setSelected(false);
+      creditCardRepository.save(defaultCreditCard);
+    }
+  }
+
+  /**
+   * get credit card entity by customer id.
+   * @param customerId the customer id
+   * @return list of CreditCard
+   */
+  private List<CreditCard> getCreditCardByCustomerId(String customerId) {
+    List<CreditCard> creditCards = creditCardRepository.getCreditCardsByCustomerId(customerId);
+
+    if (creditCards == null || creditCards.isEmpty()) {
+      LOG.debug("can not find any credit card by customerId : {}", customerId);
+      throw new NotExistException("Credit Cards Not Exist");
+    }
+    return creditCards;
   }
 }

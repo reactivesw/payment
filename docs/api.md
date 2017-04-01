@@ -30,7 +30,7 @@ TODO
 | cvv | String | required, a 3 or 4 digit card verification value assigned to credit cards|
 | customerId | String | required, customer id in our system |
 
-### DefaultRequest
+### DefaultCardRequest
 
 | field name | field type | comments |
 |-----|------|-----|
@@ -87,7 +87,7 @@ TODO
 
    | name | type | comments |
    |-|-|-|
-   | defaultRequest | DefaultRequest | required |
+   | defaultCardRequest | DefaultCardRequest | required |
 
 * response : List\<CreditCardView\>
 

@@ -31,7 +31,6 @@ class CreditCardApplicationTest extends Specification {
 
     def setup() {
         creditCardDraft.cardholderName = "cardholder-name-111"
-        creditCardDraft.commercial = commercial
         creditCardDraft.cvv = "123"
         creditCardDraft.expirationMonth = "09"
         creditCardDraft.expirationYear = "2019"

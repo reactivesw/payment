@@ -29,11 +29,6 @@ public class CreditCardDraft {
   private String cardholderName;
 
   /**
-   * The Card type.
-   */
-  private String cardType;
-
-  /**
    * The Expiration month.
    */
   @NotNull
@@ -46,11 +41,6 @@ public class CreditCardDraft {
   @NotNull
   @Size(min = 4)
   private String expirationYear;
-
-  /**
-   * The Commercial.
-   */
-  private String commercial;
 
   /**
    * The Cvv.

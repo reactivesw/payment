@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Calendar;
-
 /**
  * Created by Davis on 17/2/3.
  */
@@ -39,16 +37,6 @@ public class CreditCardView {
   private String customerId;
 
   /**
-   * The Expiration month.
-   */
-  private String expirationMonth;
-
-  /**
-   * The Expiration year.
-   */
-  private String expirationYear;
-
-  /**
    * The Expired.
    */
   private boolean expired;
@@ -59,22 +47,7 @@ public class CreditCardView {
   private String last4;
 
   /**
-   * The Commercial.
+   * if the credit card is default credit card.
    */
-  private String commercial;
-
-  /**
-   * The Token.
-   */
-  private String token;
-
-  /**
-   * The Updated at.
-   */
-  private Calendar updatedAt;
-
-  /**
-   * The Cvv.
-   */
-  private String cvv;
+  private Boolean selected;
 }

@@ -50,7 +50,9 @@ public class CreditCardApplication {
   /**
    * Instantiates a new Credit card application.
    *
-   * @param gateway the gateway
+   * @param gateway             the gateway
+   * @param relationshipService the relationship service
+   * @param creditCardService   the credit card service
    */
   @Autowired
   public CreditCardApplication(BraintreeGateway gateway,

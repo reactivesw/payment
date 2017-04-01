@@ -118,8 +118,8 @@ public class CreditCard {
   private String token;
 
   /**
-   * cvv number.
+   * if credit card default.
    */
-  @Column(name = "cvv")
-  private String cvv;
+  @Column(name = "selected")
+  private Boolean selected;
 }
