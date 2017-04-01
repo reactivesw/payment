@@ -2,6 +2,7 @@ package io.reactivesw.payment.application.controller;
 
 import static io.reactivesw.payment.infrastructure.Router.PAYMENT_ROOT;
 
+import io.reactivesw.payment.application.model.PayRequest;
 import io.reactivesw.payment.application.model.PaymentView;
 import io.reactivesw.payment.application.service.PaymentApplication;
 
@@ -9,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * Created by Davis on 17/1/4.
@@ -28,24 +31,21 @@ public class PaymentController {
   @Autowired
   private transient PaymentApplication paymentApplication;
 
+
   /**
-   * checkout.
+   * Pay payment view.
    *
-   * @param amount amount to paid
-   * @param creditCardId  payment method token
-   * @return Payment
+   * @param request the request
+   * @return the payment view
    */
   @PostMapping(PAYMENT_ROOT)
-  public PaymentView checkout(@RequestParam String customerId,
-                              @RequestParam String amount,
-                              @RequestParam String creditCardId) {
+  public PaymentView pay(@RequestBody @Valid PayRequest request) {
 
-    LOG.debug("enter checkout, customer id is : {} amount is : {}, token is : {}",
-        customerId, amount, creditCardId);
+    LOG.debug("enter. pay request is: {}.", request);
 
-    PaymentView result = paymentApplication.checkout(customerId, amount, creditCardId);
+    PaymentView result = paymentApplication.checkout(request);
 
-    LOG.debug("end checkout, result is : {}", result);
+    LOG.debug("end. result is : {}.", result);
     return result;
   }
 }

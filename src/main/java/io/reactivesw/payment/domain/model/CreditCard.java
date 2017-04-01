@@ -24,7 +24,7 @@ import javax.persistence.Version;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "credit_cart")
+@Table(name = "credit_card")
 @EntityListeners(AuditingEntityListener.class)
 public class CreditCard {
   /**
@@ -118,8 +118,8 @@ public class CreditCard {
   private String token;
 
   /**
-   * cvv number.
+   * if credit card default.
    */
-  @Column(name = "cvv")
-  private String cvv;
+  @Column(name = "selected")
+  private Boolean selected;
 }

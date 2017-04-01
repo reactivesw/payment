@@ -3,6 +3,7 @@ package io.reactivesw.payment.domain.service;
 import com.braintreegateway.Result;
 import com.braintreegateway.Transaction;
 
+import io.reactivesw.model.Money;
 import io.reactivesw.payment.application.model.mapper.PaymentMapper;
 import io.reactivesw.payment.domain.model.Payment;
 import io.reactivesw.payment.infrastructure.repository.PaymentRepository;
@@ -45,7 +46,7 @@ public class PaymentService {
    * @param result     the result
    * @return the payment
    */
-  public Payment savePayment(String customerId, String amount, Result<Transaction> result) {
+  public Payment savePayment(String customerId, Money amount, Result<Transaction> result) {
     LOG.debug("enter. customer id is: {}, amount is: {}", customerId, amount);
 
     Transaction transaction = result.getTarget();

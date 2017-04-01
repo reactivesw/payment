@@ -4,6 +4,8 @@ import com.braintreegateway.BraintreeGateway
 import com.braintreegateway.Result
 import com.braintreegateway.TransactionGateway
 import com.google.common.collect.Sets
+import io.reactivesw.model.Money
+import io.reactivesw.payment.application.model.PayRequest
 import io.reactivesw.payment.domain.model.Payment
 import io.reactivesw.payment.domain.model.value.LocalizedStringValue
 import io.reactivesw.payment.domain.model.value.PaymentMethodInfoValue
@@ -58,9 +60,12 @@ class PaymentApplicationTest extends Specification {
         transactionGateway.sale(_) >> transactionResult
         gateway.transaction() >> transactionGateway
 
+        PayRequest request = new PayRequest(customerId: customerId,
+                amount: new Money(centAmount: 12300, currencyCode: "USD"),
+                creditCardId: creditCardId)
 
         when:
-        def result = paymentApplication.checkout(customerId, amount, creditCardId)
+        def result = paymentApplication.checkout(request)
 
         then:
         result != null

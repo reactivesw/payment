@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 
 import com.braintreegateway.Transaction;
 
+import io.reactivesw.model.Money;
 import io.reactivesw.model.Reference;
 import io.reactivesw.payment.application.model.PaymentView;
 import io.reactivesw.payment.domain.model.Payment;
@@ -58,13 +59,13 @@ public final class PaymentMapper {
    * @param transaction the transaction
    * @return the payment
    */
-  public static Payment build(String amount, String customerId, Transaction transaction) {
+  public static Payment build(Money amount, String customerId, Transaction transaction) {
     Payment entity = new Payment();
 
     entity.setCustomerId(customerId);
     entity.setExternalId(null);
     entity.setInterfaceId(null);
-    entity.setAmountPlanned(new MoneyValue("USD", Integer.parseInt(amount)));
+    entity.setAmountPlanned(MoneyMapper.toEntity(amount));
     entity.setAmountAuthorized(null);
     entity.setAuthorizedUntil(null);
     entity.setAmountPaid(build(transaction));
