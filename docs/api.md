@@ -11,12 +11,13 @@ TODO
 | field name | field type | comments |
 |-----|------|-----|
 | id | String | Credit Card Id in payment service |
+| customerId | String | customer id in our system |
 | bin | String | first 6 card number |
 | cardholderName | String | |
 | cardType | String | The code-friendly representation of the card type: visa discover master-card american-express, etc. |
-| customerId | String | customerId|
 | expired | boolean | |
 | last4 | String | last 4 card number |
+| selected | boolean | this field is true means the credit card is set as default, one customer should have only one selected credit card |
 
 ### CreditCardDraft
 
@@ -28,6 +29,13 @@ TODO
 | expirationYear | String | required |
 | cvv | String | required |
 | customerId | String | required |
+
+### DefaultRequest
+
+| field name | field type | comments |
+|-----|------|-----|
+| customerId | String | required |
+| creditCardId | String | required |
 
 ### PaymentView
 
@@ -52,7 +60,7 @@ TODO
 
 ## 3. API
 
-### get all credit cards by customer id
+### 3.1 get all credit cards by customer id
 
 * URL : {service url}/credit-cards/
 * method : GET
@@ -64,28 +72,26 @@ TODO
 
 * response : List\<CreditCardView\>
 
-### add credit card
+### 3.2 add credit card
 
 * URL : {service url}/credit-cards/
 * method : POST
 * request : CreditCardDraft
 * response : CreditCardView
 
-### update credit card
+### 3.3 set credit card as default
 
-TODO
-
-* URL : {service url}/credit-cards/{creditCardId}
+* URL : {service url}/credit-cards/
 * method : PUT
-* path variable :
+* request body :
 
    | name | type | comments |
    |-|-|-|
-   | creditCardId | String | required |
+   | defaultRequest | DefaultRequest | required |
 
-* response : CreditCardView
+* response : List\<CreditCardView\>
 
-### delete credit card
+### 3.4 delete credit card
 
 TODO
 
@@ -103,7 +109,7 @@ TODO
   |-|-|-|
   | version | Integer | required |
 
-### pay by customerId id and credit card id
+### 3.5 pay by customerId id and credit card id
 
 * URL : {service url}/
 * method : POST
