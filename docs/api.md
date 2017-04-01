@@ -23,12 +23,12 @@ TODO
 
 | field name | field type | comments |
 |-----|------|-----|
-| number | String | credit card number, required |
-| cardholderName | String | required |
-| expirationMonth | String | required |
-| expirationYear | String | required |
-| cvv | String | required |
-| customerId | String | required |
+| number | String | required, credit card number |
+| cardholderName | String | required, credit card hoder name |
+| expirationMonth | String | required, expiration month for card, example: "09" |
+| expirationYear | String | required, expiration year for card, example: "2019" |
+| cvv | String | required, a 3 or 4 digit card verification value assigned to credit cards|
+| customerId | String | required, customer id in our system |
 
 ### DefaultRequest
 
