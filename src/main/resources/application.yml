@@ -22,6 +22,6 @@ spring:
 
 braintree:
   environment: "sanbox"
-  merchantid: "zd4ykzzngrhgnbdv"
-  publickey: "e993538bfa75c350dac4f3c95b377e26"
-  privatekey: "e993538bfa75c350dac4f3c95b377e26"
+  merchantid: "your merchant id"
+  publickey: "your public key"
+  privatekey: "your private key"
