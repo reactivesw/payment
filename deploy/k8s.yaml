@@ -64,4 +64,3 @@ items:
       nodePort: 30008
     selector:
       name: payment
-
