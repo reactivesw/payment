@@ -24,7 +24,7 @@ import javax.persistence.Version;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "credit_cart")
+@Table(name = "credit_card")
 @EntityListeners(AuditingEntityListener.class)
 public class CreditCard {
   /**
