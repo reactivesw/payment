@@ -1,6 +1,10 @@
 package io.reactivesw.payment.infrastructure.util;
 
+import io.reactivesw.exception.NotExistException;
 import io.reactivesw.payment.domain.model.CreditCard;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +14,11 @@ import java.util.function.Predicate;
  * Created by Davis on 17/4/1.
  */
 public final class CreditCardUtils {
+  /**
+   * log.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(CreditCardUtils.class);
+
   /**
    * Instantiates a new Credit card utils.
    */
@@ -43,6 +52,11 @@ public final class CreditCardUtils {
     Predicate<CreditCard> predicate = creditCard -> creditCard.getId().equals(creditCardId);
 
     CreditCard creditCard = creditCards.stream().filter(predicate).findAny().orElse(null);
+
+    if (creditCard == null) {
+      LOG.debug("can not find credit card by id: {}.", creditCardId);
+      throw new NotExistException("Credit Card Not Exist");
+    }
 
     return creditCard;
   }

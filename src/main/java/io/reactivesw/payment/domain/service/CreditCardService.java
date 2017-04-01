@@ -114,7 +114,7 @@ public class CreditCardService {
 
     CreditCard requestCreditCard = CreditCardUtils.getCreditCardById(creditCards, request
         .getCreditCardId());
-    setDefaultCreditCardEntity(request.getCreditCardId(), requestCreditCard);
+    setDefaultCreditCardEntity(requestCreditCard);
 
     List<CreditCardView> result = CreditCardMapper.toModel(getCreditCardByCustomerId(request
         .getCustomerId()));
@@ -127,14 +127,9 @@ public class CreditCardService {
   /**
    * set default credit card to database.
    *
-   * @param creditCardId      the credit card id
    * @param requestCreditCard the CreditCard
    */
-  private void setDefaultCreditCardEntity(String creditCardId, CreditCard requestCreditCard) {
-    if (requestCreditCard == null) {
-      LOG.debug("can not find credit card by id: {}.", creditCardId);
-      throw new NotExistException("Credit Card Not Exist");
-    }
+  private void setDefaultCreditCardEntity(CreditCard requestCreditCard) {
     requestCreditCard.setSelected(true);
     creditCardRepository.save(requestCreditCard);
   }
