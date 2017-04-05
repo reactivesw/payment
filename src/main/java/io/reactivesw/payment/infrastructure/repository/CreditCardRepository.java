@@ -16,5 +16,5 @@ public interface CreditCardRepository extends JpaRepository<CreditCard, String> 
    * @param customerId the customer id
    * @return the credit cards by customer id
    */
-  List<CreditCard> getCreditCardsByCustomerId(String customerId);
+  List<CreditCard> getCreditCardsByCustomerIdOrderByCreatedAt(String customerId);
 }

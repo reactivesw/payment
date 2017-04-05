@@ -61,6 +61,17 @@ public class CreditCardService {
   }
 
   /**
+   * Delete credit card.
+   *
+   * @param creditCardId the credit card id
+   */
+  public void deleteCreditCard(String creditCardId) {
+    LOG.debug("enter. credit card id: {}.", creditCardId);
+    creditCardRepository.delete(creditCardId);
+    LOG.debug("exit.");
+  }
+
+  /**
    * get credit cards by customer id.
    *
    * @param customerId customer id
@@ -71,7 +82,8 @@ public class CreditCardService {
 
     List<CreditCardView> result = Lists.newArrayList();
 
-    List<CreditCard> creditCards = creditCardRepository.getCreditCardsByCustomerId(customerId);
+    List<CreditCard> creditCards =
+        creditCardRepository.getCreditCardsByCustomerIdOrderByCreatedAt(customerId);
 
     if (creditCards != null) {
       result = CreditCardMapper.toModel(creditCards);
@@ -89,12 +101,7 @@ public class CreditCardService {
    */
   public String getPaymentToken(String creditCardId) {
     LOG.debug("enter getPaymentToken, credit card id is : {}", creditCardId);
-    CreditCard creditCard = creditCardRepository.findOne(creditCardId);
-
-    if (creditCard == null) {
-      LOG.debug("can not find credit card by id: {}", creditCardId);
-      throw new NotExistException("Credit Card Not Found");
-    }
+    CreditCard creditCard = getCreditCardEntity(creditCardId);
 
     String result = creditCard.getToken();
 
@@ -104,13 +111,28 @@ public class CreditCardService {
   }
 
   /**
+   * Gets credit card entity.
+   *
+   * @param creditCardId the credit card id
+   * @return the credit card entity
+   */
+  public CreditCard getCreditCardEntity(String creditCardId) {
+    CreditCard creditCard = creditCardRepository.findOne(creditCardId);
+
+    if (creditCard == null) {
+      LOG.debug("can not find credit card by id: {}", creditCardId);
+      throw new NotExistException("Credit Card Not Found");
+    }
+    return creditCard;
+  }
+
+  /**
    * Sets default card.
    *
    * @param request the request
-   * @return the default card
    */
   @Transactional
-  public List<CreditCardView> setDefaultCreditCard(DefaultCardRequest request) {
+  public void setDefaultCreditCard(DefaultCardRequest request) {
     LOG.debug("enter. request is: {}.", request);
 
     List<CreditCard> creditCards = getEntityByCustomerId(request.getCustomerId());
@@ -123,12 +145,7 @@ public class CreditCardService {
     CreditCardVersionValidator.validate(requestCreditCard, request.getVersion());
     setDefaultCreditCardEntity(requestCreditCard);
 
-    List<CreditCardView> result = CreditCardMapper.toModel(getEntityByCustomerId(request
-        .getCustomerId()));
-
     LOG.info("exit.");
-
-    return result;
   }
 
   /**
@@ -160,7 +177,8 @@ public class CreditCardService {
    * @return list of CreditCard
    */
   private List<CreditCard> getEntityByCustomerId(String customerId) {
-    List<CreditCard> creditCards = creditCardRepository.getCreditCardsByCustomerId(customerId);
+    List<CreditCard> creditCards =
+        creditCardRepository.getCreditCardsByCustomerIdOrderByCreatedAt(customerId);
 
     if (creditCards == null || creditCards.isEmpty()) {
       LOG.debug("can not find any credit card by customerId : {}", customerId);

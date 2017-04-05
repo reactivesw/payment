@@ -1,6 +1,8 @@
 package io.reactivesw.payment.application.controller;
 
 import static io.reactivesw.payment.infrastructure.Router.CREDIT_CARDS_ROOT;
+import static io.reactivesw.payment.infrastructure.Router.CREDIT_CARDS_WITH_ID;
+import static io.reactivesw.payment.infrastructure.Router.CREDIT_CARD_ID;
 import static io.reactivesw.payment.infrastructure.Router.CUSTOMER_ID;
 
 import io.reactivesw.payment.application.model.CreditCardDraft;
@@ -13,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -105,11 +109,31 @@ public class CreditCardController {
   public List<CreditCardView> setDefaultCreditCard(@RequestBody @Valid DefaultCardRequest request) {
     LOG.info("enter. request is: {}.", request);
 
-    List<CreditCardView> result = creditCardService.setDefaultCreditCard(request);
+    creditCardService.setDefaultCreditCard(request);
+
+    List<CreditCardView> result = creditCardService.getCreditCards(request.getCustomerId());
 
     LOG.info("exit.");
 
     return result;
   }
 
+  /**
+   * Delete credit card list.
+   *
+   * @param creditCardId the credit card id
+   * @param version      the version
+   * @return the list
+   */
+  @DeleteMapping(CREDIT_CARDS_WITH_ID)
+  public List<CreditCardView> deleteCreditCard(@PathVariable(CREDIT_CARD_ID) String creditCardId,
+                                               @RequestParam Integer version) {
+    LOG.info("enter. credit card id: {}, version: {}", creditCardId, version);
+
+    List<CreditCardView> result = creditCardApplication.deleteCreditCard(creditCardId, version);
+
+    LOG.info("exit. leave credit card size: {}", result.size());
+
+    return result;
+  }
 }
