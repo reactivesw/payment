@@ -1,5 +1,7 @@
 package io.reactivesw.payment.domain.service;
 
+import com.google.common.collect.Lists;
+
 import io.reactivesw.exception.NotExistException;
 import io.reactivesw.payment.application.model.CreditCardView;
 import io.reactivesw.payment.application.model.DefaultCardRequest;
@@ -7,6 +9,7 @@ import io.reactivesw.payment.application.model.mapper.CreditCardMapper;
 import io.reactivesw.payment.domain.model.CreditCard;
 import io.reactivesw.payment.infrastructure.repository.CreditCardRepository;
 import io.reactivesw.payment.infrastructure.util.CreditCardUtils;
+import io.reactivesw.payment.infrastructure.validator.CreditCardVersionValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +55,6 @@ public class CreditCardService {
 
     CreditCard savedEntity = creditCardRepository.save(entity);
 
-
     LOG.debug("exit. saved credit card is: {}.", savedEntity);
 
     return savedEntity;
@@ -67,9 +69,13 @@ public class CreditCardService {
   public List<CreditCardView> getCreditCards(String customerId) {
     LOG.debug("enter getCreditCards, customer id is : {}", customerId);
 
-    List<CreditCard> creditCards = getCreditCardByCustomerId(customerId);
+    List<CreditCardView> result = Lists.newArrayList();
 
-    List<CreditCardView> result = CreditCardMapper.toModel(creditCards);
+    List<CreditCard> creditCards = creditCardRepository.getCreditCardsByCustomerId(customerId);
+
+    if (creditCards != null) {
+      result = CreditCardMapper.toModel(creditCards);
+    }
 
     LOG.debug("end getCreditCards, get result : {}", result);
     return result;
@@ -107,16 +113,17 @@ public class CreditCardService {
   public List<CreditCardView> setDefaultCreditCard(DefaultCardRequest request) {
     LOG.debug("enter. request is: {}.", request);
 
-    List<CreditCard> creditCards = getCreditCardByCustomerId(request.getCustomerId());
+    List<CreditCard> creditCards = getEntityByCustomerId(request.getCustomerId());
 
     CreditCard defaultCreditCard = CreditCardUtils.getDefaultCreditCard(creditCards);
     clearDefaultCreditCard(defaultCreditCard);
 
     CreditCard requestCreditCard = CreditCardUtils.getCreditCardById(creditCards, request
         .getCreditCardId());
+    CreditCardVersionValidator.validate(requestCreditCard, request.getVersion());
     setDefaultCreditCardEntity(requestCreditCard);
 
-    List<CreditCardView> result = CreditCardMapper.toModel(getCreditCardByCustomerId(request
+    List<CreditCardView> result = CreditCardMapper.toModel(getEntityByCustomerId(request
         .getCustomerId()));
 
     LOG.info("exit.");
@@ -148,10 +155,11 @@ public class CreditCardService {
 
   /**
    * get credit card entity by customer id.
+   *
    * @param customerId the customer id
    * @return list of CreditCard
    */
-  private List<CreditCard> getCreditCardByCustomerId(String customerId) {
+  private List<CreditCard> getEntityByCustomerId(String customerId) {
     List<CreditCard> creditCards = creditCardRepository.getCreditCardsByCustomerId(customerId);
 
     if (creditCards == null || creditCards.isEmpty()) {

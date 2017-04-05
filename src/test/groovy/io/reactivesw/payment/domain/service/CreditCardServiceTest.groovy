@@ -42,7 +42,19 @@ class CreditCardServiceTest extends Specification {
         creditCard.selected = true
     }
 
-    def "Test 1.1: get credit cards by customer id"() {
+    def "Test 1: save credit card"() {
+        given:
+        creditCardRepository.save(_) >> creditCard
+
+        when:
+        def result = service.saveCreditCard(creditCard)
+
+        then:
+        result != null
+        result.customerId == creditCard.customerId
+    }
+
+    def "Test 2.1: get credit cards by customer id"() {
         given:
         creditCardRepository.getCreditCardsByCustomerId(_) >> Lists.newArrayList(creditCard)
 
@@ -53,29 +65,18 @@ class CreditCardServiceTest extends Specification {
         result != null
     }
 
-    def "Test 1.2: get credit cards by customer id, get null credit card list"() {
+    def "Test 2.2: get credit cards by customer id, get null credit card list and result is empyt"() {
         given:
         creditCardRepository.getCreditCardsByCustomerId(_) >> null
 
         when:
-        service.getCreditCards(customerId)
+        def result = service.getCreditCards(customerId)
 
         then:
-        thrown(NotExistException)
+        result.size() == 0
     }
 
-    def "Test 1.3: get credit cards by customer id, get empty credit card list"() {
-        given:
-        creditCardRepository.getCreditCardsByCustomerId(_) >> Lists.newArrayList()
-
-        when:
-        service.getCreditCards(customerId)
-
-        then:
-        thrown(NotExistException)
-    }
-
-    def "Test 2.1: get payment token by credit card id"() {
+    def "Test 3.1: get payment token by credit card id"() {
         given:
         creditCardRepository.findOne(_) >> creditCard
 
@@ -87,7 +88,7 @@ class CreditCardServiceTest extends Specification {
         result == creditCard.token
     }
 
-    def "Test 2.2: get payment token by credit card id, and get null credit card"() {
+    def "Test 3.2: get payment token by credit card id, and get null credit card"() {
         given:
         creditCardRepository.findOne(_) >> null
 
@@ -98,7 +99,7 @@ class CreditCardServiceTest extends Specification {
         thrown(NotExistException)
     }
 
-    def "Test 3.1: set default credit card"() {
+    def "Test 4.1: set default credit card"() {
         given:
         def requestCreditCard = creditCard
         requestCreditCard.id = requestCreditCardId
@@ -112,4 +113,29 @@ class CreditCardServiceTest extends Specification {
         then:
         result != null
     }
+
+    def "Test 4.2: set default credit card and get null list"() {
+        given:
+        creditCardRepository.getCreditCardsByCustomerId(_) >> null
+        DefaultCardRequest request = new DefaultCardRequest(customerId: customerId, creditCardId: requestCreditCardId)
+
+        when:
+        service.setDefaultCreditCard(request)
+
+        then:
+        thrown(NotExistException)
+    }
+
+    def "Test 4.3: set default credit card and get empty list"() {
+        given:
+        creditCardRepository.getCreditCardsByCustomerId(_) >> Lists.newArrayList()
+        DefaultCardRequest request = new DefaultCardRequest(customerId: customerId, creditCardId: requestCreditCardId)
+
+        when:
+        service.setDefaultCreditCard(request)
+
+        then:
+        thrown(NotExistException)
+    }
+
 }

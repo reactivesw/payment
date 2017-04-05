@@ -3,6 +3,7 @@ package io.reactivesw.payment.application.service
 import com.braintreegateway.*
 import com.google.common.collect.Lists
 import io.reactivesw.payment.application.model.CreditCardDraft
+import io.reactivesw.payment.application.model.CreditCardView
 import io.reactivesw.payment.domain.model.CreditCard
 import io.reactivesw.payment.domain.service.CreditCardService
 import io.reactivesw.payment.domain.service.CustomerRelationshipService
@@ -16,7 +17,7 @@ class CreditCardApplicationTest extends Specification {
     CreditCardService creditCardService = Mock()
     CustomerRelationshipService relationshipService = Mock()
 
-    CreditCardApplication application = new CreditCardApplication(gateway,  relationshipService, creditCardService)
+    CreditCardApplication application = new CreditCardApplication(gateway, relationshipService, creditCardService)
 
     def customerId = "customer-111"
     def creditCard = new CreditCard()
@@ -26,6 +27,10 @@ class CreditCardApplicationTest extends Specification {
     def braintreeCustomerId = "braintree-customer-111"
     def last4 = "1111"
     def bin = "411111"
+    def version = 1
+
+    def creditCardView = new CreditCardView()
+
 
     def creditCardDraft = new CreditCardDraft()
 
@@ -42,6 +47,13 @@ class CreditCardApplicationTest extends Specification {
         creditCard.commercial = commercial
         creditCard.id = creditCardId
         creditCard.token = paymentToken
+        creditCard.version = version
+
+        creditCardView.bin = bin
+        creditCardView.last4 = last4
+        creditCardView.id = creditCardId
+        creditCardView.version = version
+        creditCardView.customerId = customerId
     }
 
 
@@ -64,6 +76,8 @@ class CreditCardApplicationTest extends Specification {
         customerGateway.create(_) >> braintreeCustomer
 
         creditCardService.saveCreditCard(_) >> creditCard
+
+        creditCardService.getCreditCards(_) >> Lists.newArrayList(creditCardView)
 
         when:
         def result = application.addCreditCard(creditCardDraft)
@@ -92,6 +106,8 @@ class CreditCardApplicationTest extends Specification {
         relationshipService.saveRelationship(_) >> null
 
         creditCardService.saveCreditCard(_) >> creditCard
+
+        creditCardService.getCreditCards(_) >> Lists.newArrayList(creditCardView)
 
         when:
         def result = application.addCreditCard(creditCardDraft)
