@@ -1,7 +1,9 @@
 package io.reactivesw.payment.application.service
 
 import com.braintreegateway.*
+import com.braintreegateway.exceptions.NotFoundException
 import com.google.common.collect.Lists
+import io.reactivesw.exception.ParametersException
 import io.reactivesw.payment.application.model.CreditCardDraft
 import io.reactivesw.payment.application.model.CreditCardView
 import io.reactivesw.payment.domain.model.CreditCard
@@ -94,6 +96,7 @@ class CreditCardApplicationTest extends Specification {
         btCreditCard.getToken() >> paymentToken
         btCreditCard.getCommercial() >> com.braintreegateway.CreditCard.Commercial.YES
         btCreditCard.getCreatedAt() >> Calendar.getInstance()
+        creditCardDraft.number = "4111111111112"
 
         Result<com.braintreegateway.CreditCard> braintreeCreditCard = new Result()
         braintreeCreditCard.target = btCreditCard
@@ -116,4 +119,35 @@ class CreditCardApplicationTest extends Specification {
         result != null
     }
 
+    def "Test 2.1: delete credit card"() {
+        given:
+        creditCardService.getCreditCardEntity(_) >> creditCard
+        creditCardService.getCreditCards(_) >> Lists.newArrayList(creditCardView)
+        Result<com.braintreegateway.CreditCard> braintreeCreditCard = new Result()
+        CreditCardGateway creditCardGateway = Mock()
+        gateway.creditCard() >> creditCardGateway
+        creditCardGateway.delete(_) >> braintreeCreditCard
+
+        when:
+        def result = application.deleteCreditCard(creditCardId, version)
+
+        then:
+        result != null
+    }
+
+    def "Test 2.2: delete credit card and braintree token is null"() {
+        given:
+        creditCardService.getCreditCardEntity(_) >> creditCard
+        creditCardService.getCreditCards(_) >> Lists.newArrayList(creditCardView)
+        Result<com.braintreegateway.CreditCard> braintreeCreditCard = new Result()
+        CreditCardGateway creditCardGateway = Mock()
+        gateway.creditCard() >> creditCardGateway
+        creditCardGateway.delete(_) >> {throw new NotFoundException("token not found")}
+
+        when:
+        def result = application.deleteCreditCard(creditCardId, version)
+
+        then:
+        thrown(ParametersException)
+    }
 }

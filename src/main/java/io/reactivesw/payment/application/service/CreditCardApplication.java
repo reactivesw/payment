@@ -5,7 +5,9 @@ import com.braintreegateway.CreditCardRequest;
 import com.braintreegateway.Customer;
 import com.braintreegateway.CustomerRequest;
 import com.braintreegateway.Result;
+import com.braintreegateway.exceptions.BraintreeException;
 
+import io.reactivesw.exception.ParametersException;
 import io.reactivesw.payment.application.model.CreditCardDraft;
 import io.reactivesw.payment.application.model.CreditCardView;
 import io.reactivesw.payment.application.model.mapper.CreditCardMapper;
@@ -15,6 +17,8 @@ import io.reactivesw.payment.domain.model.CreditCard;
 import io.reactivesw.payment.domain.model.CustomerRelationship;
 import io.reactivesw.payment.domain.service.CreditCardService;
 import io.reactivesw.payment.domain.service.CustomerRelationshipService;
+import io.reactivesw.payment.infrastructure.validator.CreditCardNumberValidator;
+import io.reactivesw.payment.infrastructure.validator.CreditCardVersionValidator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -66,6 +70,33 @@ public class CreditCardApplication {
   }
 
   /**
+   * Delete credit card list.
+   *
+   * @param creditCardId the credit card id
+   * @param version      the version
+   * @return the list
+   */
+  public List<CreditCardView> deleteCreditCard(String creditCardId, Integer version) {
+    LOG.debug("enter. credit card id: {}, version: {}", creditCardId, version);
+
+    CreditCard deleteCreditCard = creditCardService.getCreditCardEntity(creditCardId);
+    CreditCardVersionValidator.validate(deleteCreditCard, version);
+
+    String customerId = deleteCreditCard.getCustomerId();
+    String token = deleteCreditCard.getToken();
+
+    deleteCreditCardFromBraintree(token);
+
+    creditCardService.deleteCreditCard(creditCardId);
+
+    List<CreditCardView> result = creditCardService.getCreditCards(customerId);
+
+    LOG.debug("exit. leave credit card size: {}", result.size());
+
+    return result;
+  }
+
+  /**
    * Add credit card credit card view.
    *
    * @param creditCardDraft the credit card draft
@@ -105,12 +136,14 @@ public class CreditCardApplication {
    */
   private com.braintreegateway.CreditCard addCreditCard(CreditCardDraft creditCardDraft,
                                                         String brainttreeId) {
-    // TODO: 17/3/15  validate card number is exist
-    com.braintreegateway.CreditCard braintreeCard;
+    List<CreditCardView> creditCards =
+        creditCardService.getCreditCards(creditCardDraft.getCustomerId());
+
+    CreditCardNumberValidator.validate(creditCards, creditCardDraft.getNumber());
+
     CreditCardRequest request = CreditCardRequestMapper.build(brainttreeId, creditCardDraft);
     Result<com.braintreegateway.CreditCard> result = gateway.creditCard().create(request);
-    braintreeCard = result.getTarget();
-    return braintreeCard;
+    return result.getTarget();
   }
 
   /**
@@ -134,5 +167,20 @@ public class CreditCardApplication {
 
     braintreeCard = braintreeCustomer.getTarget().getCreditCards().get(0);
     return braintreeCard;
+  }
+
+  /**
+   * Delete credit card from braintree.
+   *
+   * @param token the token
+   */
+  private void deleteCreditCardFromBraintree(String token) {
+    LOG.debug("enter. braintree credit card token: {}", token);
+    try {
+      gateway.creditCard().delete(token);
+    } catch (BraintreeException btException) {
+      LOG.debug("Something Wrong when Delete CreditCard from Braintree", btException);
+      throw new ParametersException("Something Wrong when Delete CreditCard from Braintree");
+    }
   }
 }

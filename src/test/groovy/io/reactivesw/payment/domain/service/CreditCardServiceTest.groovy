@@ -56,7 +56,7 @@ class CreditCardServiceTest extends Specification {
 
     def "Test 2.1: get credit cards by customer id"() {
         given:
-        creditCardRepository.getCreditCardsByCustomerId(_) >> Lists.newArrayList(creditCard)
+        creditCardRepository.getCreditCardsByCustomerIdOrderByCreatedAt(_) >> Lists.newArrayList(creditCard)
 
         when:
         def result = service.getCreditCards(customerId)
@@ -67,7 +67,7 @@ class CreditCardServiceTest extends Specification {
 
     def "Test 2.2: get credit cards by customer id, get null credit card list and result is empyt"() {
         given:
-        creditCardRepository.getCreditCardsByCustomerId(_) >> null
+        creditCardRepository.getCreditCardsByCustomerIdOrderByCreatedAt(_) >> null
 
         when:
         def result = service.getCreditCards(customerId)
@@ -104,19 +104,19 @@ class CreditCardServiceTest extends Specification {
         def requestCreditCard = creditCard
         requestCreditCard.id = requestCreditCardId
         requestCreditCard.selected = false
-        creditCardRepository.getCreditCardsByCustomerId(_) >> Lists.newArrayList(creditCard, requestCreditCard)
+        creditCardRepository.getCreditCardsByCustomerIdOrderByCreatedAt(_) >> Lists.newArrayList(creditCard, requestCreditCard)
         DefaultCardRequest request = new DefaultCardRequest(customerId: customerId, creditCardId: requestCreditCardId)
 
         when:
-        def result = service.setDefaultCreditCard(request)
+        service.setDefaultCreditCard(request)
 
         then:
-        result != null
+        true
     }
 
     def "Test 4.2: set default credit card and get null list"() {
         given:
-        creditCardRepository.getCreditCardsByCustomerId(_) >> null
+        creditCardRepository.getCreditCardsByCustomerIdOrderByCreatedAt(_) >> null
         DefaultCardRequest request = new DefaultCardRequest(customerId: customerId, creditCardId: requestCreditCardId)
 
         when:
@@ -128,7 +128,7 @@ class CreditCardServiceTest extends Specification {
 
     def "Test 4.3: set default credit card and get empty list"() {
         given:
-        creditCardRepository.getCreditCardsByCustomerId(_) >> Lists.newArrayList()
+        creditCardRepository.getCreditCardsByCustomerIdOrderByCreatedAt(_) >> Lists.newArrayList()
         DefaultCardRequest request = new DefaultCardRequest(customerId: customerId, creditCardId: requestCreditCardId)
 
         when:
@@ -138,4 +138,11 @@ class CreditCardServiceTest extends Specification {
         thrown(NotExistException)
     }
 
+    def "Test 5: delete credit card"() {
+        when:
+        service.deleteCreditCard(customerId)
+
+        then:
+        true
+    }
 }
