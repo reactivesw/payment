@@ -11,6 +11,7 @@ TODO
 | field name | field type | comments |
 |-----|------|-----|
 | id | String | Credit Card Id in payment service |
+| version | Integer | |
 | customerId | String | customer id in our system |
 | bin | String | first 6 card number |
 | cardholderName | String | |
@@ -36,6 +37,7 @@ TODO
 |-----|------|-----|
 | customerId | String | required |
 | creditCardId | String | required |
+| version | Integer | required |
 
 ### PaymentView
 
@@ -62,7 +64,7 @@ TODO
 
 ### 3.1 get all credit cards by customer id
 
-* URL : {service url}/credit-cards/
+* URL : {ip}/payments/credit-cards/
 * method : GET
 * request param :
 
@@ -74,14 +76,26 @@ TODO
 
 ### 3.2 add credit card
 
-* URL : {service url}/credit-cards/
+* URL : {ip}/payments/credit-cards/
 * method : POST
 * request : CreditCardDraft
-* response : CreditCardView
+* response : List\<CreditCardView\>
+* payload sample :
+
+```json
+{
+    "number":"4111111111111111",
+    "cardholderName":"davis",
+    "expirationMonth":"09",
+    "expirationYear":"2019",
+    "cvv":"123",
+    "customerId":"7626af08-9667-41a9-8832-1748eeec5de9"
+}
+```
 
 ### 3.3 set credit card as default
 
-* URL : {service url}/credit-cards/
+* URL : {ip}/payments/credit-cards/
 * method : PUT
 * request body :
 
@@ -90,12 +104,19 @@ TODO
    | defaultCardRequest | DefaultCardRequest | required |
 
 * response : List\<CreditCardView\>
+* payload sample :
+
+```json
+{
+  "customerId":"7626af08-9667-41a9-8832-1748eeec5de9",
+  "creditCardId":"cb14e8b5-980c-4ba3-aa62-963347e52511",
+  "version":1
+}
+```
 
 ### 3.4 delete credit card
 
-TODO
-
-* URL : {service url}/credit-cards/{creditCardId}
+* URL : {ip}/payments/credit-cards/{creditCardId}
 * method : DELETE
 * path variable :
 
@@ -109,9 +130,11 @@ TODO
   |-|-|-|
   | version | Integer | required |
 
+* response : List\<CreditCardView\>
+
 ### 3.5 pay by customerId id and credit card id
 
-* URL : {service url}/
+* URL : {ip}/payments/
 * method : POST
 * request body :
 

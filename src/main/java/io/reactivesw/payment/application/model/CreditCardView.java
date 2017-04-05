@@ -17,6 +17,11 @@ public class CreditCardView {
   private String id;
 
   /**
+   * The version.
+   */
+  private Integer version;
+
+  /**
    * The Bin.
    */
   private String bin;
