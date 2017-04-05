@@ -64,7 +64,7 @@ TODO
 
 ### 3.1 get all credit cards by customer id
 
-* URL : {service url}/credit-cards/
+* URL : {ip}/payments/credit-cards/
 * method : GET
 * request param :
 
@@ -76,7 +76,7 @@ TODO
 
 ### 3.2 add credit card
 
-* URL : {service url}/credit-cards/
+* URL : {ip}/payments/credit-cards/
 * method : POST
 * request : CreditCardDraft
 * response : List\<CreditCardView\>
@@ -95,7 +95,7 @@ TODO
 
 ### 3.3 set credit card as default
 
-* URL : {service url}/credit-cards/
+* URL : {ip}/payments/credit-cards/
 * method : PUT
 * request body :
 
@@ -116,7 +116,7 @@ TODO
 
 ### 3.4 delete credit card
 
-* URL : {service url}/credit-cards/{creditCardId}
+* URL : {ip}/payments/credit-cards/{creditCardId}
 * method : DELETE
 * path variable :
 
@@ -134,7 +134,7 @@ TODO
 
 ### 3.5 pay by customerId id and credit card id
 
-* URL : {service url}/
+* URL : {ip}/payments/
 * method : POST
 * request body :
 
