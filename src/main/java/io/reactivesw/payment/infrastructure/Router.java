@@ -25,6 +25,16 @@ public final class Router {
   public static final String CREDIT_CARDS_ROOT = PAYMENT_ROOT + CREDIT_CARDS;
 
   /**
+   * The constant CREDIT_CARD_ID.
+   */
+  public static final String CREDIT_CARD_ID = "creditCardId";
+
+  /**
+   * The constant CREDIT_CARDS_WITH_ID.
+   */
+  public static final String CREDIT_CARDS_WITH_ID = CREDIT_CARDS_ROOT + "/{" + CREDIT_CARD_ID + "}";
+
+  /**
    * The constant PAYMENT_HEALTH_CHECK.
    */
   public static final String PAYMENT_HEALTH_CHECK = PAYMENT_ROOT + "health";
