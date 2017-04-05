@@ -12,6 +12,7 @@ import io.reactivesw.payment.domain.service.CreditCardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +28,7 @@ import javax.validation.Valid;
  * Created by Davis on 17/3/15.
  */
 @RestController
+@CrossOrigin
 public class CreditCardController {
 
   /**

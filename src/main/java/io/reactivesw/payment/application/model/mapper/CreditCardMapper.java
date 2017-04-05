@@ -45,6 +45,7 @@ public final class CreditCardMapper {
     model.setExpired(entity.isExpired());
     model.setLast4(entity.getLast4());
     model.setSelected(entity.getSelected());
+    model.setVersion(entity.getVersion());
     return model;
   }
 
