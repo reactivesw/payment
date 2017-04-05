@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Davis on 17/3/30.
  */
@@ -69,7 +71,7 @@ public class CreditCardApplication {
    * @param creditCardDraft the credit card draft
    * @return the credit card view
    */
-  public CreditCardView addCreditCard(CreditCardDraft creditCardDraft) {
+  public List<CreditCardView> addCreditCard(CreditCardDraft creditCardDraft) {
     LOG.debug("enter. credit card draft is: {}.", creditCardDraft);
 
     String braintreeId = relationshipService.getBrainTreeId(creditCardDraft.getCustomerId());
@@ -85,11 +87,11 @@ public class CreditCardApplication {
     CreditCard creditCard = CreditCardMapper.toEntity(creditCardDraft.getCustomerId(),
         braintreeCard);
 
-    CreditCard saveCreditCard = creditCardService.saveCreditCard(creditCard);
+    creditCardService.saveCreditCard(creditCard);
 
-    CreditCardView result = CreditCardMapper.toModel(saveCreditCard);
+    List<CreditCardView> result = creditCardService.getCreditCards(creditCardDraft.getCustomerId());
 
-    LOG.debug("exit. new credit card is: {}.", result);
+    LOG.debug("exit. credit card size: {}.", result.size());
 
     return result;
   }

@@ -20,4 +20,9 @@ public class DefaultCardRequest {
    * The Credit card id.
    */
   private String creditCardId;
+
+  /**
+   * The version.
+   */
+  private Integer version;
 }

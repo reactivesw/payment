@@ -85,12 +85,12 @@ public class CreditCardController {
    * @return the credit card view
    */
   @PostMapping(value = CREDIT_CARDS_ROOT)
-  public CreditCardView addCreditCard(@RequestBody @Valid CreditCardDraft creditCardDraft) {
+  public List<CreditCardView> addCreditCard(@RequestBody @Valid CreditCardDraft creditCardDraft) {
     LOG.info("enter. credit card draft is: {}.", creditCardDraft);
 
-    CreditCardView result = creditCardApplication.addCreditCard(creditCardDraft);
+    List<CreditCardView> result = creditCardApplication.addCreditCard(creditCardDraft);
 
-    LOG.info("exit. new credit card is: {}.", result);
+    LOG.info("exit. credit card size: {}.", result);
 
     return result;
   }
@@ -111,4 +111,5 @@ public class CreditCardController {
 
     return result;
   }
+
 }
