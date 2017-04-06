@@ -26,8 +26,8 @@ TODO
 |-----|------|-----|
 | number | String | required, credit card number |
 | cardholderName | String | required, credit card hoder name |
-| expirationMonth | String | required, expiration month for card, example: "09" |
-| expirationYear | String | required, expiration year for card, example: "2019" |
+| expirationMonth | String | required, expiration month for card, at least 2 characters example: "09" |
+| expirationYear | String | required, expiration year for card, at least 4 characters, example: "2019" |
 | cvv | String | required, a 3 or 4 digit card verification value assigned to credit cards|
 | customerId | String | required, customer id in our system |
 
@@ -143,3 +143,23 @@ TODO
   | request | PayRequest | required |
 
 * response : PaymentView
+
+## 4. Test Credit Card Number
+
+| credit card number | credit card type |
+|-----|-----|
+| 378282246310005 | American Express |
+| 371449635398431 | American Express |
+| 6011111111111117 | Discover |
+| 3530111333300000 | JCB|
+| 6304000000000000 | Maestro |
+| 5555555555554444 | Mastercard |
+| 2223000048400011 | Mastercard |
+| 4111111111111111 | Visa |
+| 4005519200000004 | Visa |
+| 4009348888881881 | Visa |
+| 4012000033330026 | Visa |
+| 4012000077777777 | Visa |
+| 4012888888881881 | Visa |
+| 4217651111111119 | Visa |
+| 4500600000000061 | Visa |
