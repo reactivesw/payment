@@ -146,20 +146,20 @@ TODO
 
 ## 4. Test Credit Card Number
 
-| credit card number | credit card type |
-|-----|-----|
-| 378282246310005 | American Express |
-| 371449635398431 | American Express |
-| 6011111111111117 | Discover |
-| 3530111333300000 | JCB|
-| 6304000000000000 | Maestro |
-| 5555555555554444 | Mastercard |
-| 2223000048400011 | Mastercard |
-| 4111111111111111 | Visa |
-| 4005519200000004 | Visa |
-| 4009348888881881 | Visa |
-| 4012000033330026 | Visa |
-| 4012000077777777 | Visa |
-| 4012888888881881 | Visa |
-| 4217651111111119 | Visa |
-| 4500600000000061 | Visa |
+| credit card number | credit card type | comments |
+|-----|-----|-------|
+| 378282246310005 | American Express | CVV must be 4 digits for American Express. |
+| 371449635398431 | American Express | CVV must be 4 digits for American Express. |
+| 6011111111111117 | Discover |  CVV must be 3 digits. |
+| 3530111333300000 | JCB| CVV must be 3 digits. |
+| 6304000000000000 | Maestro | Wrong data, credit card type is not accepted by this merchant. |
+| 5555555555554444 | Mastercard | CVV must be 3 digits. |
+| 2223000048400011 | Mastercard | CVV must be 3 digits. |
+| 4111111111111111 | Visa | CVV must be 3 digits. |
+| 4005519200000004 | Visa | CVV must be 3 digits. |
+| 4009348888881881 | Visa | CVV must be 3 digits. |
+| 4012000033330026 | Visa | CVV must be 3 digits. |
+| 4012000077777777 | Visa | CVV must be 3 digits. |
+| 4012888888881881 | Visa | CVV must be 3 digits. |
+| 4217651111111119 | Visa | CVV must be 3 digits. |
+| 4500600000000061 | Visa | CVV must be 3 digits. |
