@@ -19,6 +19,7 @@ import io.reactivesw.payment.domain.service.CreditCardService;
 import io.reactivesw.payment.domain.service.CustomerRelationshipService;
 import io.reactivesw.payment.infrastructure.validator.CreditCardNumberValidator;
 import io.reactivesw.payment.infrastructure.validator.CreditCardVersionValidator;
+import io.reactivesw.payment.infrastructure.validator.ResultValidator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -143,6 +144,9 @@ public class CreditCardApplication {
 
     CreditCardRequest request = CreditCardRequestMapper.build(brainttreeId, creditCardDraft);
     Result<com.braintreegateway.CreditCard> result = gateway.creditCard().create(request);
+
+    ResultValidator.validate(result);
+
     return result.getTarget();
   }
 
@@ -159,6 +163,8 @@ public class CreditCardApplication {
     com.braintreegateway.CreditCard braintreeCard;
     CustomerRequest customerRequest = CustomerRequestMapper.build(creditCardDraft);
     Result<Customer> braintreeCustomer = gateway.customer().create(customerRequest);
+
+    ResultValidator.validate(braintreeCustomer);
 
     String brainttreeId = braintreeCustomer.getTarget().getId();
 

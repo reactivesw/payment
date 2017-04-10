@@ -14,6 +14,7 @@ import io.reactivesw.payment.application.model.mapper.TransactionRequestMapper;
 import io.reactivesw.payment.domain.model.Payment;
 import io.reactivesw.payment.domain.service.CreditCardService;
 import io.reactivesw.payment.domain.service.PaymentService;
+import io.reactivesw.payment.infrastructure.validator.ResultValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +80,8 @@ public class PaymentApplication {
 
     TransactionRequest transactionRequest = TransactionRequestMapper.build(decimalAmount, token);
     Result<Transaction> result = gateway.transaction().sale(transactionRequest);
+
+    ResultValidator.validate(result);
 
     // TODO: 17/2/4 处理不同的结果
 

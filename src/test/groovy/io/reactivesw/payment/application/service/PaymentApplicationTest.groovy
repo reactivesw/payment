@@ -2,6 +2,7 @@ package io.reactivesw.payment.application.service
 
 import com.braintreegateway.BraintreeGateway
 import com.braintreegateway.Result
+import com.braintreegateway.Transaction
 import com.braintreegateway.TransactionGateway
 import com.google.common.collect.Sets
 import io.reactivesw.model.Money
@@ -55,7 +56,9 @@ class PaymentApplicationTest extends Specification {
         creditCardService.getPaymentToken(_) >> paymentToken
         paymentService.savePayment(_, _, _) >> paymentEntity
 
-        Result transactionResult = new Result()
+        Transaction transaction = Mock()
+        Result transactionResult = Mock()
+        transactionResult.getTarget() >> transaction
         TransactionGateway transactionGateway = Mock()
         transactionGateway.sale(_) >> transactionResult
         gateway.transaction() >> transactionGateway
