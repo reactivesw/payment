@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by Davis on 17/4/10.
+ * validate class for braintree result.
  */
 public final class ResultValidator {
 
