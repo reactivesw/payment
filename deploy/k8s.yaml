@@ -4,6 +4,7 @@ items:
 - kind: Deployment
   apiVersion: extensions/v1beta1
   metadata:
+    namespace: dev
     name: payment
   spec:
     replicas: 1
@@ -54,6 +55,7 @@ items:
   apiVersion: v1
   metadata:
     name: payment
+    namespace: dev
     labels:
       name: payment
   spec:
@@ -61,6 +63,6 @@ items:
     ports:
     - port: 80
       targetPort: 80
-      nodePort: 30008
+      nodePort: 30108
     selector:
       name: payment
