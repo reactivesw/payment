@@ -11,7 +11,7 @@ import lombok.Setter;
 public class PaymentEvent {
 
   /**
-   * the order id.
+   * The order id.
    */
   private String orderId;
 
