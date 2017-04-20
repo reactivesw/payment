@@ -7,6 +7,7 @@ import com.braintreegateway.TransactionGateway
 import com.google.common.collect.Sets
 import io.reactivesw.model.Money
 import io.reactivesw.payment.application.model.PayRequest
+import io.reactivesw.payment.domain.model.CreditCard
 import io.reactivesw.payment.domain.model.Payment
 import io.reactivesw.payment.domain.model.value.LocalizedStringValue
 import io.reactivesw.payment.domain.model.value.PaymentMethodInfoValue
@@ -34,6 +35,8 @@ class PaymentApplicationTest extends Specification {
     def creditCardId = "credit-card-111"
     def paymentMethodInfoValue = new PaymentMethodInfoValue()
 
+    def creditCard = new CreditCard()
+
     def paymentStatusValue = new PaymentStatusValue()
 
 
@@ -49,11 +52,14 @@ class PaymentApplicationTest extends Specification {
         paymentEntity.id = paymentId
         paymentEntity.paymentMethodInfo = paymentMethodInfoValue
         paymentEntity.paymentStatus = paymentStatusValue
+
+        creditCard.customerId = customerId
+        creditCard.token = paymentToken
     }
 
     def "Test 1.1: checkout by customer id, amount and credit card id"() {
         given:
-        creditCardService.getPaymentToken(_) >> paymentToken
+        creditCardService.getCreditCardEntity(_) >> creditCard
         paymentService.savePayment(_, _, _) >> paymentEntity
 
         Transaction transaction = Mock()

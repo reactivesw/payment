@@ -11,6 +11,7 @@ import io.reactivesw.payment.application.model.PayRequest;
 import io.reactivesw.payment.application.model.PaymentView;
 import io.reactivesw.payment.application.model.mapper.PaymentMapper;
 import io.reactivesw.payment.application.model.mapper.TransactionRequestMapper;
+import io.reactivesw.payment.domain.model.CreditCard;
 import io.reactivesw.payment.domain.model.Payment;
 import io.reactivesw.payment.domain.service.CreditCardService;
 import io.reactivesw.payment.domain.service.PaymentService;
@@ -53,12 +54,12 @@ public class PaymentApplication {
    * Instantiates a new Payment application.
    *
    * @param creditCardService the credit card service
-   * @param gateway           the gateway
-   * @param paymentService    the payment service
+   * @param gateway the gateway
+   * @param paymentService the payment service
    */
   @Autowired
   public PaymentApplication(CreditCardService creditCardService, BraintreeGateway gateway,
-                            PaymentService paymentService) {
+      PaymentService paymentService) {
     this.creditCardService = creditCardService;
     this.gateway = gateway;
     this.paymentService = paymentService;
@@ -76,31 +77,20 @@ public class PaymentApplication {
 
     BigDecimal decimalAmount = divideAmount(request.getAmount());
 
-    String token = getPaymentToken(request.getCreditCardId());
+    CreditCard creditCart = creditCardService.getCreditCardEntity(request.getCreditCardId());
 
-    TransactionRequest transactionRequest = TransactionRequestMapper.build(decimalAmount, token);
+    TransactionRequest transactionRequest =
+        TransactionRequestMapper.build(decimalAmount, creditCart.getToken());
     Result<Transaction> result = gateway.transaction().sale(transactionRequest);
 
     ResultValidator.validate(result);
 
     // TODO: 17/2/4 处理不同的结果
 
-    Payment savedEntity = paymentService.savePayment(request.getCustomerId(),
+    Payment savedEntity = paymentService.savePayment(creditCart.getCustomerId(),
         request.getAmount(), result);
 
     return PaymentMapper.toModel(savedEntity);
-  }
-
-  /**
-   * Gets payment token.
-   *
-   * @param creditCardId the credit card id
-   * @return the payment token
-   */
-  private String getPaymentToken(String creditCardId) {
-    LOG.debug("enter getPaymentToken, credit card id is : {}", creditCardId);
-
-    return creditCardService.getPaymentToken(creditCardId);
   }
 
   /**
