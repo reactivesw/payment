@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EventPublisher {
 
   /**
-   * log.
+   * Logger.
    */
   private static final Logger LOG = LoggerFactory.getLogger(EventPublisher.class);
 

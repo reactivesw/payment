@@ -23,7 +23,7 @@ import javax.persistence.Table;
 public class EventMessage {
 
   /**
-   * uuid.
+   * The id.
    */
   @Id
   @GeneratedValue(generator = "uuid")
@@ -32,7 +32,7 @@ public class EventMessage {
   private String id;
 
   /**
-   * The Created at.
+   * The Created Time.
    */
   @Column(name = "created_at")
   private long createdAt;
@@ -43,7 +43,7 @@ public class EventMessage {
   private long expire;
 
   /**
-   * version.
+   * The Version.
    */
   private Integer version;
 
@@ -53,12 +53,12 @@ public class EventMessage {
   private String data;
 
   /**
-   * topic.
+   * The topic.
    */
   private String topic;
 
   /**
-   * event status.
+   * The event status.
    */
   private EventStatus status;
 }
