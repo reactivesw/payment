@@ -17,6 +17,12 @@
 * Topic name: `reactivesw-order-created`
 * Subscription name: `payment-order-created`
 
+Use gcloud command to create the subscription:
+
+```bash
+gcloud beta pubsub subscriptions create --topic reactivesw-order-created payment-order-created
+```
+
 #### 4.1.3 Workflow
 
 1. get paymentMethodId, totalAmount and orderId from event message
@@ -41,6 +47,11 @@
 #### 4.2.2 Topic
 
 Topic name: `reactivesw-payment-payed`
+Use gcloud command to create the topic:
+
+```bash
+gcloud beta pubsub topics create reactivesw-payment-payed
+```
 
 #### 4.2.3 Workflow
 
