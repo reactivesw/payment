@@ -12,6 +12,7 @@ import io.reactivesw.payment.infrastructure.util.EventSubscriberUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,7 @@ public class OrderCreationConsumer {
   /**
    * OrderCreationEvent handler.
    */
+  @Autowired
   private transient OrderCreationEventHandler eventHandler;
 
   /**
