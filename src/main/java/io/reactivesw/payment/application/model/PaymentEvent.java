@@ -18,7 +18,7 @@ public class PaymentEvent {
   /**
    * The status.
    */
-  private Boolean status;
+  private Boolean result;
 
   /**
    * The message.
@@ -42,7 +42,7 @@ public class PaymentEvent {
     PaymentEvent paymentEvent = new PaymentEvent();
 
     paymentEvent.setOrderId(orderId);
-    paymentEvent.setStatus(status);
+    paymentEvent.setResult(status);
     paymentEvent.setPaymentId(paymentId);
 
     return paymentEvent;
