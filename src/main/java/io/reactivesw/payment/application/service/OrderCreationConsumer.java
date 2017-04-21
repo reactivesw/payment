@@ -72,7 +72,7 @@ public class OrderCreationConsumer {
               eventHandler.handleOrderCreation(event);
               consumer.acknowledgeMessage(message.getExternalId());
             } catch (BraintreeException exception) {
-              LOG.debug("Something wrong and pay fail.", exception);
+              LOG.debug("Something wrong and pay failed.", exception);
             }
           }
       );
