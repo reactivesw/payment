@@ -1,6 +1,6 @@
 package io.reactivesw.payment.application.service;
 
-import io.reactivesw.exception.ParametersException;
+import io.reactivesw.exception.NotExistException;
 import io.reactivesw.payment.application.model.OrderCreationEvent;
 import io.reactivesw.payment.application.model.PayRequest;
 import io.reactivesw.payment.application.model.PaymentView;
@@ -78,8 +78,9 @@ public class OrderCreationEventHandler {
         payedOrderService.savePayedOrder(event.getOrderId(), paymentView);
         reservedStatus = true;
         paymentId = paymentView.getId();
-      } catch (ParametersException ex) {
-        LOG.debug("Pay for order: {} fail.", event.getOrderId(), ex);
+      } catch (NumberFormatException | NotExistException exception) {
+        // Something wrong and can not pay again.
+        LOG.debug("Pay for order: {} fail.", event.getOrderId(), exception);
       }
       //3. save payment event
       eventMessageService.savePaymentEvent(event.getOrderId(), reservedStatus, paymentId);

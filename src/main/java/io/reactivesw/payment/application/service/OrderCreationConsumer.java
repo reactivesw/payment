@@ -1,5 +1,7 @@
 package io.reactivesw.payment.application.service;
 
+import com.braintreegateway.exceptions.BraintreeException;
+
 import io.reactivesw.message.client.consumer.Consumer;
 import io.reactivesw.message.client.core.DefaultConsumerFactory;
 import io.reactivesw.message.client.core.Message;
@@ -66,8 +68,12 @@ public class OrderCreationConsumer {
       events.stream().forEach(
           message -> {
             OrderCreationEvent event = jsonDeserializer.deserialize(message.getData().toString());
-            eventHandler.handleOrderCreation(event);
-            consumer.acknowledgeMessage(message.getExternalId());
+            try {
+              eventHandler.handleOrderCreation(event);
+              consumer.acknowledgeMessage(message.getExternalId());
+            } catch (BraintreeException exception) {
+              LOG.debug("Something wrong and pay fail.", exception);
+            }
           }
       );
     }
