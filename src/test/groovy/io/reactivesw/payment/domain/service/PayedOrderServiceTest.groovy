@@ -41,7 +41,7 @@ class PayedOrderServiceTest extends Specification {
         def result = service.isPayedOrder(orderId)
 
         then:
-        result == false
+        result == true
     }
 
     def "Test2.2: payed order not exist"() {
@@ -52,6 +52,6 @@ class PayedOrderServiceTest extends Specification {
         def result = service.isPayedOrder(orderId)
 
         then:
-        result == true
+        result == false
     }
 }

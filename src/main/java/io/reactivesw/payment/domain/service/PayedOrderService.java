@@ -66,7 +66,7 @@ public class PayedOrderService {
 
     PayedOrder order = repository.findOne(PayedOrderSpecification.exist(orderId));
 
-    if (order != null) {
+    if (order == null) {
       result = false;
     }
 
