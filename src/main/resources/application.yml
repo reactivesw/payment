@@ -20,6 +20,14 @@ spring:
   profiles:
     active: test
 
+io:
+  reactivesw:
+    message:
+      brokerType: google
+      google:
+        project:
+          id: reactivesw-project
+
 braintree:
   environment: "sanbox"
   merchantid: "your merchant id"
