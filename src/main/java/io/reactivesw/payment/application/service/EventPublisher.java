@@ -6,8 +6,6 @@ import io.reactivesw.message.client.producer.Producer;
 import io.reactivesw.payment.domain.model.EventMessage;
 import io.reactivesw.payment.domain.service.EventMessageService;
 import io.reactivesw.payment.infrastructure.configuration.EventConfig;
-import io.reactivesw.payment.infrastructure.util.EventTopics;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +44,9 @@ public class EventPublisher {
    */
   public EventPublisher(EventConfig config) {
     Producer payedProducer = DefaultProducerFactory.createGoogleProducer(
-        config.getGoogleCloudProjectId(), EventTopics.PAYMENT_PAYED);
+        config.getGoogleCloudProjectId(), config.getPaymentPayedName());
 
-    producerMap.put(EventTopics.PAYMENT_PAYED, payedProducer);
+    producerMap.put(config.getPaymentPayedName(), payedProducer);
   }
 
   /**

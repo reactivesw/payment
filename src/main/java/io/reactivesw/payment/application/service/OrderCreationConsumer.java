@@ -1,15 +1,12 @@
 package io.reactivesw.payment.application.service;
 
 import com.braintreegateway.exceptions.BraintreeException;
-
 import io.reactivesw.message.client.consumer.Consumer;
 import io.reactivesw.message.client.core.DefaultConsumerFactory;
 import io.reactivesw.message.client.core.Message;
 import io.reactivesw.message.client.utils.serializer.JsonDeserializer;
 import io.reactivesw.payment.application.model.OrderCreationEvent;
 import io.reactivesw.payment.infrastructure.configuration.EventConfig;
-import io.reactivesw.payment.infrastructure.util.EventSubscriberUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +50,7 @@ public class OrderCreationConsumer {
    */
   public OrderCreationConsumer(EventConfig config) {
     consumer = DefaultConsumerFactory.createGoogleConsumer(config.getGoogleCloudProjectId(),
-        EventSubscriberUtil.ORDER_CREATION);
+        config.getOrderCreatedSubscriber());
   }
 
   /**

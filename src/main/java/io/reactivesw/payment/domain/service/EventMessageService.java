@@ -2,10 +2,10 @@ package io.reactivesw.payment.domain.service;
 
 import io.reactivesw.payment.application.model.mapper.EventMessageMapper;
 import io.reactivesw.payment.domain.model.EventMessage;
+import io.reactivesw.payment.infrastructure.configuration.EventConfig;
 import io.reactivesw.payment.infrastructure.enums.EventStatus;
 import io.reactivesw.payment.infrastructure.repository.EventMessageRepository;
 import io.reactivesw.payment.infrastructure.repository.EventMessageSpecification;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,25 +32,32 @@ public class EventMessageService {
   private transient EventMessageRepository eventMessageRepository;
 
   /**
+   * Event config.
+   */
+  private transient EventConfig eventConfig;
+
+  /**
    * Instantiates a new Event message service.
    *
    * @param eventMessageRepository the event message repository
    */
   @Autowired
-  public EventMessageService(EventMessageRepository eventMessageRepository) {
+  public EventMessageService(EventMessageRepository eventMessageRepository,
+                             EventConfig eventConfig) {
     this.eventMessageRepository = eventMessageRepository;
+    this.eventConfig = eventConfig;
   }
 
   /**
    * Save payment event.
    *
-   * @param orderId the order id
-   * @param status the status
+   * @param orderId   the order id
+   * @param status    the status
    * @param paymentId the payment id
    */
   public void savePaymentEvent(String orderId, Boolean status, String paymentId) {
     LOG.debug("Enter. OrderId: {}, status: {}.", orderId, status);
-    EventMessage message = EventMessageMapper.build(orderId, status, paymentId);
+    EventMessage message = EventMessageMapper.build(orderId, status, paymentId, eventConfig);
 
     EventMessage savedMessage = eventMessageRepository.save(message);
 

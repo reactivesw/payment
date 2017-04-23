@@ -2,6 +2,7 @@ package io.reactivesw.payment.domain.service
 
 import com.google.common.collect.Lists
 import io.reactivesw.payment.domain.model.EventMessage
+import io.reactivesw.payment.infrastructure.configuration.EventConfig
 import io.reactivesw.payment.infrastructure.enums.EventStatus
 import io.reactivesw.payment.infrastructure.repository.EventMessageRepository
 import org.springframework.data.domain.Page
@@ -13,7 +14,8 @@ import spock.lang.Specification
  */
 class EventMessageServiceTest extends Specification {
     EventMessageRepository repository = Mock()
-    EventMessageService service = new EventMessageService(repository)
+    EventConfig eventConfig = new EventConfig(paymentPayedVersion: 1, paymentPayedName: "eventTopicName")
+    EventMessageService service = new EventMessageService(repository, eventConfig)
 
     def categoryId1 = "categoryId1"
     def categoryId2 = "categoryId2"
@@ -21,6 +23,7 @@ class EventMessageServiceTest extends Specification {
 
     def messageId = "messageId1"
     EventMessage savedMessage = new EventMessage(id: messageId, status: EventStatus.CREATED)
+
 
     def "Test1: save event message"() {
         given:
