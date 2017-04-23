@@ -14,11 +14,19 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: io.reactivesw.database.dialect.JSONBPostgreSQLDialect
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
   profiles:
     active: test
+
+io:
+  reactivesw:
+    message:
+      brokerType: google
+      google:
+        project:
+          id: reactivesw-project
 
 braintree:
   environment: "sanbox"

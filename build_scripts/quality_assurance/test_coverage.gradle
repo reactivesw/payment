@@ -22,6 +22,8 @@ jacocoCoverage { // Enforce minimum code coverage of 80% for every Java file.
 //     Minimum 'branch' coverage of 80% for all files.
     fileThreshold 0.0, "Application.java"
     fileThreshold 0.0, "Router.java"
+    fileThreshold 0.0, "EventPublisher.java"
+    fileThreshold 0.0, "OrderCreationConsumer.java"
     fileThreshold 0.8, BRANCH
     fileThreshold 0.8, METHOD
 }
