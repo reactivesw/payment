@@ -15,7 +15,7 @@ items:
       spec:
         containers:
         - name: payment
-          image: reactivesw/payment:0.0.4-dev
+          image: reactivesw/payment:0.0.4
           imagePullPolicy: Always
           ports:
           - containerPort: 80
