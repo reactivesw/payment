@@ -144,7 +144,11 @@ TODO
 
 * response : PaymentView
 
-## 4. Test Credit Card Number
+## 4. Test Data
+
+Test data is from [braintree doc](https://developers.braintreepayments.com/reference/general/testing/java#credit-card-numbers)
+
+### 4.1 Test Credit Card Number
 
 | credit card number | credit card type | comments |
 |-----|-----|-------|
@@ -163,3 +167,18 @@ TODO
 | 4012888888881881 | Visa | CVV must be 3 digits. |
 | 4217651111111119 | Visa | CVV must be 3 digits. |
 | 4500600000000061 | Visa | CVV must be 3 digits. |
+
+### 4.2  Test Amounts
+
+| Amount | Authorization Response | Settlement Response |
+|-------|---------|--------|
+| $0.01 - $1999.99 | Authorized | Settled |
+| $2000.00 - $3000.99 |	Processor Declined with a processor response equal to the amount |	n/a |
+| $3001.00 - $4000.99 | 	Authorized | 	Settled |
+| $4001.00 - $4001.99 | 	Authorized | 	Settlement Declined on certain transaction types with a processor response equal to the amount; Settled on all others |
+| $4002.00 - $4002.99 | 	Authorized | 	Settlement Pending on PayPal transactions with a processor response equal to the amount; Settled on all others |
+| $4003.00 - $5000.99 | 	Authorized | 	Settlement Declined on certain transaction types with a processor response equal to the amount; Settled on all others |
+| $5001.00 |	Gateway Rejected with a reason of Application Incomplete | 	n/a |
+| $5001.01 |	Processor Declined on PayPal transactions with a 2038 processor response. Authorized on all others |	n/a on PayPal transactions; Settled on all others |
+| $5001.02 |	Authorized | 	Processor Unavailable on certain transaction types with a processor response of 3000; Settled on all others |
+| $5002.00 and up |	Authorized | 	Settled |
