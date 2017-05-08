@@ -63,7 +63,7 @@ public class OrderCreationConsumer {
     // Pull messages todo this should be configurable.
     List<Message> events = consumer.pullMessages(10);
     if (!events.isEmpty()) {
-      LOG.debug("Handle events, size: {}.", events.size());
+      LOG.info("Handle events, size: {}.", events.size());
       events.stream().forEach(
           message -> {
             OrderCreationEvent event = jsonDeserializer.deserialize(message.getData().toString());

@@ -61,11 +61,12 @@ public class OrderCreationEventHandler {
    */
   @Transactional
   public void handleOrderCreation(OrderCreationEvent event) {
-    LOG.debug("Enter. OrderId: {}.", event.getOrderId());
+    LOG.info("Enter. OrderId: {}, paymentMethodId: {}, centAmount: {}.",
+        event.getOrderId(), event.getPaymentMethodId(), event.getTotalAmount().getCentAmount());
 
     if (payedOrderService.isPayedOrder(event.getOrderId())) {
       // If orderId is exist, can not pay again.
-      LOG.debug("Order: {} is exist.", event.getOrderId());
+      LOG.info("Order: {} is exist.", event.getOrderId());
     } else {
       //1. get paymentMethodId and totalAmount
       PayRequest request = PayRequestMapper.build(event);
@@ -85,6 +86,6 @@ public class OrderCreationEventHandler {
       //3. save payment event
       eventMessageService.savePaymentEvent(event.getOrderId(), reservedStatus, paymentId);
     }
-    LOG.debug("Exit.");
+    LOG.info("Exit.");
   }
 }
