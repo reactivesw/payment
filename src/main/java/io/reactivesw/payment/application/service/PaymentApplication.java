@@ -5,7 +5,6 @@ import com.braintreegateway.Result;
 import com.braintreegateway.Transaction;
 import com.braintreegateway.TransactionRequest;
 
-import io.reactivesw.exception.ParametersException;
 import io.reactivesw.model.Money;
 import io.reactivesw.payment.application.model.PayRequest;
 import io.reactivesw.payment.application.model.PaymentView;
@@ -15,6 +14,7 @@ import io.reactivesw.payment.domain.model.CreditCard;
 import io.reactivesw.payment.domain.model.Payment;
 import io.reactivesw.payment.domain.service.CreditCardService;
 import io.reactivesw.payment.domain.service.PaymentService;
+import io.reactivesw.payment.infrastructure.validator.PayRequestValidator;
 import io.reactivesw.payment.infrastructure.validator.ResultValidator;
 
 import org.slf4j.Logger;
@@ -75,6 +75,8 @@ public class PaymentApplication {
 
     LOG.debug("enter. pay request is: {}", request);
 
+    PayRequestValidator.validate(request);
+
     BigDecimal decimalAmount = divideAmount(request.getAmount());
 
     CreditCard creditCart = creditCardService.getCreditCardEntity(request.getCreditCardId());
@@ -100,14 +102,11 @@ public class PaymentApplication {
    * @return the big decimal
    */
   private BigDecimal divideAmount(Money amount) {
-    BigDecimal decimalAmount = null;
-    try {
-      decimalAmount = new BigDecimal(amount.getCentAmount());
-      decimalAmount = decimalAmount.divide(new BigDecimal("100"));
-    } catch (NumberFormatException ex) {
-      LOG.debug("can not parse amount : {} to BigDecimal", amount, ex);
-      throw new ParametersException("Can Not Parse Amount to BigDecimal");
-    }
+
+    BigDecimal decimalAmount = new BigDecimal(amount.getCentAmount());
+    // TODO: 17/5/8 100 should move to config
+    decimalAmount = decimalAmount.divide(new BigDecimal("100"));
+
     return decimalAmount;
   }
 }
