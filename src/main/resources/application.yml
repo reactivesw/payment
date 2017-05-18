@@ -23,13 +23,13 @@ spring:
 io:
   reactivesw:
     message:
+      topic:
+        ordercreated:
+          subscriber: dev-payment-order-pay
+        paymentpayed:
+          name: reactivesw-dev-payment-payed
+          version: 1
       brokerType: google
       google:
         project:
           id: reactivesw-project
-
-braintree:
-  environment: "sanbox"
-  merchantid: "your merchant id"
-  publickey: "your public key"
-  privatekey: "your private key"

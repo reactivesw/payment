@@ -1,76 +1,44 @@
 package io.reactivesw.payment.infrastructure.configuration;
 
 import com.braintreegateway.BraintreeGateway;
-import com.braintreegateway.Environment;
 
-import org.springframework.beans.factory.annotation.Value;
+import io.reactivesw.payment.domain.model.BraintreeConfig;
+import io.reactivesw.payment.domain.service.BraintreeConfigService;
+import io.reactivesw.payment.infrastructure.util.BraintreeEnvironmentUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by Davis on 16/12/27.
+ * The type Braintree factory.
  */
 @Configuration
 public class BraintreeFactory {
-  /**
-   * merchant id.
-   */
-  //  @Value("#{environment.BRAINTREE_MERCHANT_ID}")
-  @Value("${braintree.merchantid}")
-  public transient String merchantId;
 
   /**
-   * public key.
+   * The BraintreeConfigService.
    */
-  @Value("${braintree.publickey}")
-  public transient String publicKey;
+  @Autowired
+  private transient BraintreeConfigService configService;
 
   /**
-   * private key.
-   */
-  @Value("${braintree.privatekey}")
-  public transient String privateKey;
-
-  /**
-   * braintree environment, default is sanbox.
-   */
-  public transient Environment environment;
-
-  /**
-   * create gateway bean.
+   * Gets braintree gateway.
    *
-   * @return BrainTreeGateway
+   * @return the braintree gateway
    */
-  @Bean
+  @Bean()
   public BraintreeGateway getBraintreeGateway() {
-    return new BraintreeGateway(
-        environment,
-        merchantId,
-        publicKey,
-        privateKey
-    );
-  }
 
-  /**
-   * set braintree environment.
-   *
-   * @param environment environment
-   */
-  @Value("${braintree.environment}")
-  public void setEnvironment(String environment) {
-    switch (environment) {
-      case "sanbox":
-        this.environment = Environment.SANDBOX;
-        break;
-      case "production":
-        this.environment = Environment.PRODUCTION;
-        break;
-      case "development":
-        this.environment = Environment.DEVELOPMENT;
-        break;
-      default:
-        this.environment = Environment.SANDBOX;
-        break;
+    BraintreeConfig config = configService.getConfig();
+    BraintreeGateway gateway = null;
+    if (config != null) {
+      gateway = new BraintreeGateway(
+          BraintreeEnvironmentUtils.getEnvironment(config.getEnvironment()),
+          config.getMerchantId(),
+          config.getPublicKey(),
+          config.getPublicKey());
     }
+    return gateway;
   }
 }
