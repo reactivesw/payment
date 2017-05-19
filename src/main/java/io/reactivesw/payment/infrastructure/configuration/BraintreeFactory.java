@@ -2,6 +2,7 @@ package io.reactivesw.payment.infrastructure.configuration;
 
 import com.braintreegateway.BraintreeGateway;
 
+import io.reactivesw.payment.application.model.mapper.BraintreeConfigMapper;
 import io.reactivesw.payment.domain.model.BraintreeConfig;
 import io.reactivesw.payment.domain.service.BraintreeConfigService;
 import io.reactivesw.payment.infrastructure.util.BraintreeEnvironmentUtils;
@@ -23,14 +24,19 @@ public class BraintreeFactory {
   private transient BraintreeConfigService configService;
 
   /**
+   * The AES configuration.
+   */
+  @Autowired
+  private transient AesConfiguration aesConfiguration;
+
+  /**
    * Gets braintree gateway.
    *
    * @return the braintree gateway
    */
-  @Bean()
+  @Bean
   public BraintreeGateway getBraintreeGateway() {
-
-    BraintreeConfig config = configService.getConfig();
+    BraintreeConfig config = getConfig();
     BraintreeGateway gateway = null;
     if (config != null) {
       gateway = new BraintreeGateway(
@@ -40,5 +46,18 @@ public class BraintreeFactory {
           config.getPublicKey());
     }
     return gateway;
+  }
+
+  /**
+   * Get braintree config.
+   *
+   * @return the BraintreeConfig
+   */
+  private BraintreeConfig getConfig() {
+    BraintreeConfig config = configService.getConfig();
+    if (config != null) {
+      config = BraintreeConfigMapper.decryptConfig(config, aesConfiguration.getSecretKey());
+    }
+    return config;
   }
 }
