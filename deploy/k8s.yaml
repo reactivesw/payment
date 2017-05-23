@@ -57,6 +57,11 @@ items:
               secretKeyRef:
                 name: reactivesw-secret
                 key: jwt.secret
+          - name: aes_secret_key
+            valueFrom:
+              secretKeyRef:
+                name: reactivesw-secret
+                key: aes.secret.key
 - kind: Service
   apiVersion: v1
   metadata:
