@@ -43,7 +43,7 @@ public class BraintreeFactory {
           BraintreeEnvironmentUtils.getEnvironment(config.getEnvironment()),
           config.getMerchantId(),
           config.getPublicKey(),
-          config.getPublicKey());
+          config.getPrivateKey());
     }
     return gateway;
   }

@@ -32,7 +32,7 @@ io:
       brokerType: google
       google:
         project:
-          id: reactivesw-project
+          id: reactivesw-project2
 
 aes:
   secret:
